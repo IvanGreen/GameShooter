@@ -15,6 +15,10 @@ public class GameShooter extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		img = new Texture("background.jpg");
 
+		/**поставил картинку на фон с заданными Вами размерами,
+		 * но почему-то она не на весь экран, поэтому пока что
+		 * залил фон просто черным цветом ;)
+		 */
 
 	}
 
