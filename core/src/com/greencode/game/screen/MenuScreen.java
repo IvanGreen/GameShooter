@@ -66,13 +66,13 @@ public class MenuScreen extends BaseScreen{
 
     @Override
     public boolean keyTyped(char character) {
-        if (character == 'w'){
+        if (character == 'w' || character == 'W' || character == 'ц' || character == 'Ц'){
             pos.y += 10;
-        } else if(character == 's'){
+        } else if(character == 's' || character == 'S' || character == 'Ы' || character == 'ы'){
             pos.y -= 10;
-        } else if(character == 'a'){
+        } else if(character == 'a' || character == 'ф' || character == 'Ф' || character == 'A'){
             pos.x -= 10;
-        } else if(character == 'd'){
+        } else if(character == 'd' || character == 'D' || character == 'В' || character == 'в'){
             pos.x += 10;
         }
         return false;
