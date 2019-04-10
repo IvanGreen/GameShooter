@@ -25,7 +25,6 @@ public class MenuScreen extends BaseScreen{
         img = new Texture("badlogic.jpg");
         bg = new Texture("background.jpg");
 
-        //если пишу короткий путь, то выдает ошибку, хз почему, просьба помочь.
     }
 
     @Override
