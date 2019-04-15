@@ -11,17 +11,16 @@ public class MenuScreen extends BaseScreen{
     private Vector2 touch;
     private Vector2 pos;
     private Vector2 v;
-    private Vector2 end;
-    private final float time = 60; //60 кадров в секунду
     private Texture bg;
+    private Vector2 buf;
 
     @Override
     public void show() {
         super.show();
         touch = new Vector2();
-        v = new Vector2(0,0);
+        v = new Vector2(0.2f,0.5f);
         pos = new Vector2();
-        end = new Vector2();
+        buf = new Vector2();
         img = new Texture("badlogic.jpg");
         bg = new Texture("background.jpg");
 
@@ -31,7 +30,6 @@ public class MenuScreen extends BaseScreen{
     public void render(float delta) {
         super.render(delta);
         batch.begin();
-        pos.add(v);
         batch.draw(bg,0,0, Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
         batch.draw(img, pos.x, pos.y, 120,120);
         batch.end();
@@ -47,6 +45,7 @@ public class MenuScreen extends BaseScreen{
 
     @Override
     public boolean keyDown(int keycode) {
+        v.setZero();
         if(keycode == 19){
             pos.y += 10;
         }else if(keycode == 22){
@@ -56,6 +55,7 @@ public class MenuScreen extends BaseScreen{
         }else if(keycode == 20){
             pos.y -= 10;
         }
+        v.setZero();
         return false;
     }
 
@@ -66,6 +66,7 @@ public class MenuScreen extends BaseScreen{
 
     @Override
     public boolean keyTyped(char character) {
+        v.setZero();
         if (character == 'w' || character == 'W' || character == 'ц' || character == 'Ц'){
             pos.y += 10;
         } else if(character == 's' || character == 'S' || character == 'Ы' || character == 'ы'){
@@ -75,49 +76,26 @@ public class MenuScreen extends BaseScreen{
         } else if(character == 'd' || character == 'D' || character == 'В' || character == 'в'){
             pos.x += 10;
         }
+        v.setZero();
         return false;
     }
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         touch.set(screenX, Gdx.graphics.getHeight() - screenY);
-
-        sliceToPoint(screenX,screenY); //запускаем в путь
-
+        v.set(touch.cpy().sub(pos)).setLength(0.5f);
         System.out.println("TouchDown screenX = " + touch.x + " screenY = " + touch.y);
         return false;
     }
 
-    public void sliceToPoint (int screenX,int screenY) {
-        end.x = screenX;
-        end.y = Gdx.graphics.getHeight() - screenY;
-
-        float s1 = screenX - pos.x; //определяем сколько точек надо пройти по оси Х
-        float s2 = (Gdx.graphics.getHeight() - screenY) - pos.y; //определяем сколько точек надо пройти по оси У
-
-        v = new Vector2(s1 / time, s2 / time);//делим расстояние на 60 кадров в сек. и получаем скорость
-    }
-
     public void checkFinal(){
-        if (v.x >= 0 && v.y >= 0) {
+        buf.set(touch);
 
-            if (pos.y >= end.y && pos.x >= end.x) {
-                v.setZero();
-            }
-        } else if(v.x < 0 && v.y < 0){
-            if (pos.y <= end.y && pos.x <= end.x) {
-                v.setZero();
-            }
-        } else if (pos.y == end.y && pos.x == end.x){
-            v.setZero();
-        } else if (v.x >= 0 && v.y <= 0){
-            if (pos.y <= end.y && pos.x >= end.x){
-                v.setZero();
-            }
-        } else if (v.x <= 0 && v.y >= 0){
-            if (pos.y >= end.y && pos.x <= end.x){
-                v.setZero();
-            }
+        if (buf.sub(pos).len() > 0.5f) {
+            pos.add(v);
+        } else {
+            pos.set(touch);
         }
     }
+
 }
