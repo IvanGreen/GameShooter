@@ -35,11 +35,8 @@ public class GamerModel extends Sprite {
         buf.set(touch);
         buf2.set(v);
         buf2.scl(delta);
-        if (buf.sub(pos).len() <= buf2.len()) {
-            pos.set(touch);
-        } else {
-            pos.mulAdd(v,delta);
-        }
+        if (buf.sub(pos).len() <= buf2.len()) pos.set(touch);
+        else pos.mulAdd(v, delta);
     }
 
     @Override
