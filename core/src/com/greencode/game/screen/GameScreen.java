@@ -1,5 +1,6 @@
 package com.greencode.game.screen;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -8,9 +9,12 @@ import com.greencode.game.base.BaseScreen;
 import com.greencode.game.math.Rect;
 import com.greencode.game.sprite.Asteroid;
 import com.greencode.game.sprite.Background;
+import com.greencode.game.sprite.ButtonOptions;
 import com.greencode.game.sprite.GamerModel;
 
 public class GameScreen extends BaseScreen {
+
+    private Game game;
 
     private Texture bg;
     private Background background;
@@ -18,6 +22,12 @@ public class GameScreen extends BaseScreen {
     private TextureAtlas textureAtlas;
     private TextureAtlas atlas;
     private Asteroid asteroidList[];
+    private TextureAtlas buttonsAtlas;
+    private ButtonOptions buttonOptions;
+
+    public GameScreen(Game game) {
+        this.game = game;
+    }
 
 
     @Override
@@ -29,6 +39,8 @@ public class GameScreen extends BaseScreen {
         gm = new GamerModel(atlas);
         textureAtlas = new TextureAtlas("textures/Atlas/asteroids.pack");
         asteroidList = new Asteroid[30];
+        buttonsAtlas = new TextureAtlas("textures/Atlas/menu.pack");
+        buttonOptions = new ButtonOptions(buttonsAtlas,game);
         for (int i = 0; i < asteroidList.length; i++){
             asteroidList[i] = new Asteroid(textureAtlas,Asteroid.chooseAsteroid());
         }
@@ -42,6 +54,7 @@ public class GameScreen extends BaseScreen {
             asteroid.resize(worldBounds);
         }
         gm.resize(worldBounds);
+        buttonOptions.resize(worldBounds);
     }
 
     @Override
@@ -65,6 +78,7 @@ public class GameScreen extends BaseScreen {
             asteroid.draw(batch);
         }
         gm.draw(batch);
+        buttonOptions.draw(batch);
         batch.end();
     }
 
@@ -79,11 +93,13 @@ public class GameScreen extends BaseScreen {
     @Override
     public boolean touchDown(Vector2 touch, int pointer) {
         gm.touchDown(touch,pointer);
+        buttonOptions.touchDown(touch,pointer);
         return false;
     }
 
     @Override
     public boolean touchUp(Vector2 touch, int pointer) {
+        buttonOptions.touchUp(touch,pointer);
         return false;
     }
 }

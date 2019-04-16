@@ -8,8 +8,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.greencode.game.base.BaseScreen;
 import com.greencode.game.math.Rect;
 import com.greencode.game.sprite.Background;
+import com.greencode.game.sprite.ButtonCredits;
 import com.greencode.game.sprite.ButtonExit;
-import com.greencode.game.sprite.ButtonOptions;
 import com.greencode.game.sprite.ButtonStart;
 import com.greencode.game.sprite.GameName;
 
@@ -22,7 +22,7 @@ public class MenuScreen extends BaseScreen {
     private ButtonStart buttonStart;
     private GameName gameName;
     private TextureAtlas buttonsAtlas;
-    private ButtonOptions buttonOptions;
+    private ButtonCredits buttonCredits;
 
     public MenuScreen(Game game) {
         this.game = game;
@@ -37,7 +37,7 @@ public class MenuScreen extends BaseScreen {
         buttonExit = new ButtonExit(buttonsAtlas);
         buttonStart = new ButtonStart(buttonsAtlas,game);
         gameName = new GameName(buttonsAtlas);
-        buttonOptions = new ButtonOptions(buttonsAtlas);
+        buttonCredits = new ButtonCredits(buttonsAtlas);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class MenuScreen extends BaseScreen {
         buttonExit.resize(worldBounds);
         buttonStart.resize(worldBounds);
         gameName.resize(worldBounds);
-        buttonOptions.resize(worldBounds);
+        buttonCredits.resize(worldBounds);
     }
 
     @Override
@@ -67,7 +67,7 @@ public class MenuScreen extends BaseScreen {
         buttonExit.draw(batch);
         buttonStart.draw(batch);
         gameName.draw(batch);
-        buttonOptions.draw(batch);
+        buttonCredits.draw(batch);
         batch.end();
     }
 
@@ -81,7 +81,7 @@ public class MenuScreen extends BaseScreen {
     public boolean touchDown(Vector2 touch, int pointer) {
         buttonExit.touchDown(touch,pointer);
         buttonStart.touchDown(touch,pointer);
-        buttonOptions.touchDown(touch,pointer);
+        buttonCredits.touchDown(touch,pointer);
         return false;
     }
 
@@ -89,7 +89,7 @@ public class MenuScreen extends BaseScreen {
     public boolean touchUp(Vector2 touch, int pointer) {
         buttonExit.touchUp(touch,pointer);
         buttonStart.touchUp(touch,pointer);
-        buttonOptions.touchUp(touch,pointer);
+        buttonCredits.touchUp(touch,pointer);
         return false;
     }
 }
