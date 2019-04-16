@@ -1,0 +1,138 @@
+
+assets.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+xLongBox
+  rotate: false
+  xy: 1, 742
+  size: 860, 263
+  orig: 860, 263
+  offset: 0, 0
+  index: -1
+iceLongBox
+  rotate: false
+  xy: 1, 433
+  size: 677, 307
+  orig: 677, 307
+  offset: 0, 0
+  index: -1
+longBox
+  rotate: false
+  xy: 1, 124
+  size: 638, 307
+  orig: 638, 307
+  offset: 0, 0
+  index: -1
+vase
+  rotate: false
+  xy: 863, 686
+  size: 405, 319
+  orig: 405, 319
+  offset: 0, 0
+  index: -1
+box
+  rotate: false
+  xy: 1270, 698
+  size: 388, 307
+  orig: 388, 307
+  offset: 0, 0
+  index: -1
+xBox
+  rotate: false
+  xy: 1660, 742
+  size: 374, 263
+  orig: 374, 263
+  offset: 0, 0
+  index: -1
+darts
+  rotate: false
+  xy: 1, 1
+  size: 383, 121
+  orig: 383, 121
+  offset: 0, 0
+  index: -1
+iceCube
+  rotate: false
+  xy: 680, 377
+  size: 310, 307
+  orig: 310, 307
+  offset: 0, 0
+  index: -1
+targetBlue
+  rotate: false
+  xy: 992, 421
+  size: 268, 263
+  orig: 268, 263
+  offset: 0, 0
+  index: -1
+targetRed
+  rotate: false
+  xy: 641, 112
+  size: 266, 263
+  orig: 266, 263
+  offset: 0, 0
+  index: -1
+longVase
+  rotate: false
+  xy: 909, 89
+  size: 197, 286
+  orig: 197, 286
+  offset: 0, 0
+  index: -1
+knifes
+  rotate: false
+  xy: 386, 31
+  size: 251, 91
+  orig: 251, 91
+  offset: 0, 0
+  index: -1
+ball
+  rotate: false
+  xy: 1108, 222
+  size: 165, 197
+  orig: 165, 197
+  offset: 0, 0
+  index: -1
+duck
+  rotate: false
+  xy: 1108, 42
+  size: 211, 178
+  orig: 211, 178
+  offset: 0, 0
+  index: -1
+psyDuck
+  rotate: false
+  xy: 1660, 566
+  size: 216, 174
+  orig: 216, 174
+  offset: 0, 0
+  index: -1
+pie
+  rotate: false
+  xy: 1878, 635
+  size: 169, 105
+  orig: 169, 105
+  offset: 0, 0
+  index: -1
+key
+  rotate: false
+  xy: 1262, 487
+  size: 101, 197
+  orig: 101, 197
+  offset: 0, 0
+  index: -1
+bomb
+  rotate: false
+  xy: 1365, 503
+  size: 134, 193
+  orig: 134, 193
+  offset: 0, 0
+  index: -1
+coin
+  rotate: false
+  xy: 1501, 564
+  size: 123, 132
+  orig: 123, 132
+  offset: 0, 0
+  index: -1

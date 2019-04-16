@@ -1,0 +1,220 @@
+
+enemies.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+boss
+  rotate: false
+  xy: 1, 1361
+  size: 1256, 586
+  orig: 1256, 586
+  offset: 0, 0
+  index: -1
+pound
+  rotate: false
+  xy: 1, 939
+  size: 958, 420
+  orig: 958, 420
+  offset: 0, 0
+  index: -1
+rightWaka
+  rotate: false
+  xy: 1, 470
+  size: 884, 467
+  orig: 884, 467
+  offset: 0, 0
+  index: -1
+waka
+  rotate: false
+  xy: 1259, 1480
+  size: 733, 467
+  orig: 733, 467
+  offset: 0, 0
+  index: -1
+dog
+  rotate: false
+  xy: 1, 48
+  size: 552, 420
+  orig: 552, 420
+  offset: 0, 0
+  index: -1
+bolt
+  rotate: false
+  xy: 555, 9
+  size: 372, 459
+  orig: 372, 459
+  offset: 0, 0
+  index: -1
+kingPurple
+  rotate: false
+  xy: 961, 903
+  size: 350, 456
+  orig: 350, 456
+  offset: 0, 0
+  index: -1
+kingWorm
+  rotate: false
+  xy: 1313, 879
+  size: 460, 599
+  orig: 460, 599
+  offset: 0, 0
+  index: -1
+pear
+  rotate: false
+  xy: 887, 487
+  size: 372, 414
+  orig: 372, 414
+  offset: 0, 0
+  index: -1
+rightPsy
+  rotate: false
+  xy: 1261, 463
+  size: 488, 414
+  orig: 488, 414
+  offset: 0, 0
+  index: -1
+leftTornado
+  rotate: false
+  xy: 929, 1
+  size: 460, 460
+  orig: 460, 460
+  offset: 0, 0
+  index: -1
+tornado
+  rotate: false
+  xy: 1391, 1
+  size: 447, 460
+  orig: 447, 460
+  offset: 0, 0
+  index: -1
+
+enemies2.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+worm
+  rotate: false
+  xy: 1, 1275
+  size: 420, 601
+  orig: 420, 601
+  offset: 0, 0
+  index: -1
+rightKingWorm
+  rotate: false
+  xy: 423, 1280
+  size: 424, 596
+  orig: 424, 596
+  offset: 0, 0
+  index: -1
+rightWarlax
+  rotate: false
+  xy: 849, 1456
+  size: 488, 420
+  orig: 488, 420
+  offset: 0, 0
+  index: -1
+warlax
+  rotate: false
+  xy: 1339, 1456
+  size: 473, 420
+  orig: 473, 420
+  offset: 0, 0
+  index: -1
+psy
+  rotate: false
+  xy: 1, 859
+  size: 473, 414
+  orig: 473, 414
+  offset: 0, 0
+  index: -1
+rightWeight
+  rotate: false
+  xy: 1, 464
+  size: 460, 393
+  orig: 460, 393
+  offset: 0, 0
+  index: -1
+weight
+  rotate: false
+  xy: 1, 69
+  size: 447, 393
+  orig: 447, 393
+  offset: 0, 0
+  index: -1
+rightBolt
+  rotate: false
+  xy: 476, 819
+  size: 371, 459
+  orig: 371, 459
+  offset: 0, 0
+  index: -1
+rightStrongBolt
+  rotate: false
+  xy: 849, 1005
+  size: 372, 449
+  orig: 372, 449
+  offset: 0, 0
+  index: -1
+strongBolt
+  rotate: false
+  xy: 1223, 1005
+  size: 372, 449
+  orig: 372, 449
+  offset: 0, 0
+  index: -1
+rightPear
+  rotate: false
+  xy: 463, 403
+  size: 372, 414
+  orig: 372, 414
+  offset: 0, 0
+  index: -1
+bee
+  rotate: false
+  xy: 450, 1
+  size: 350, 400
+  orig: 350, 400
+  offset: 0, 0
+  index: -1
+rightKingPurple
+  rotate: false
+  xy: 1597, 998
+  size: 334, 456
+  orig: 334, 456
+  offset: 0, 0
+  index: -1
+electroRabbit
+  rotate: false
+  xy: 849, 610
+  size: 350, 393
+  orig: 350, 393
+  offset: 0, 0
+  index: -1
+purple
+  rotate: false
+  xy: 1201, 606
+  size: 350, 397
+  orig: 350, 397
+  offset: 0, 0
+  index: -1
+rightBee
+  rotate: false
+  xy: 1553, 596
+  size: 334, 400
+  orig: 334, 400
+  offset: 0, 0
+  index: -1
+rightElectroRabbit
+  rotate: false
+  xy: 837, 215
+  size: 334, 393
+  orig: 334, 393
+  offset: 0, 0
+  index: -1
+rightPurple
+  rotate: false
+  xy: 1173, 207
+  size: 334, 397
+  orig: 334, 397
+  offset: 0, 0
+  index: -1

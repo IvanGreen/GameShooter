@@ -43,12 +43,13 @@ public class Asteroid extends Sprite {
     public static String chooseAsteroid(){
         String type = null;
         Random random = new Random();
-        int rnd = random.nextInt(4);
+        int rnd = random.nextInt(5);
         
-        if (rnd == 0) type = "aestroid_brown";
-        if (rnd == 1) type = "aestroid_dark";
-        if (rnd == 2) type = "aestroid_gay";
-        if (rnd == 3) type = "aestroid_gray";
+        if (rnd == 0) type = "coin";
+        if (rnd == 1) type = "ball";
+        if (rnd == 2) type = "psyDuck";
+        if (rnd == 3) type = "key";
+        if (rnd == 4) type = "bomb";
         
         return type;
     }

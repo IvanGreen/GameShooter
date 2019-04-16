@@ -15,7 +15,7 @@ public class GamerModel extends Sprite {
     private Vector2 buf2;
 
     public GamerModel(TextureAtlas atlas) {
-        super(atlas.findRegion("spiked ship"));
+        super(atlas.findRegion("backRed"));
         setHeightProportion(SIZE);
         touch = new Vector2();
         buf = new Vector2();

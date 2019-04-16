@@ -35,10 +35,10 @@ public class GameScreen extends BaseScreen {
         super.show();
         bg = new Texture("textures/Background/background.jpg");
         background = new Background(new TextureRegion(bg));
-        atlas = new TextureAtlas("textures/Atlas/gameModel.pack");
+        atlas = new TextureAtlas("cuteTextures/atlas/char.pack");
         gm = new GamerModel(atlas);
-        textureAtlas = new TextureAtlas("textures/Atlas/asteroids.pack");
-        asteroidList = new Asteroid[30];
+        textureAtlas = new TextureAtlas("cuteTextures/atlas/assets.pack");
+        asteroidList = new Asteroid[20];
         buttonsAtlas = new TextureAtlas("textures/Atlas/menu.pack");
         buttonOptions = new ButtonOptions(buttonsAtlas,game);
         for (int i = 0; i < asteroidList.length; i++){
