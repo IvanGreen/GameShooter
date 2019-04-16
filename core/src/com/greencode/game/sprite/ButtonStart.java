@@ -11,15 +11,15 @@ public class ButtonStart extends ScaledTouchUpButton {
     private Game game;
 
     public ButtonStart(TextureAtlas atlas, Game game) {
-        super(atlas.findRegion("play_buttons"));
+        super(atlas.findRegion("play_normal"));
         this.game = game;
-        setHeightProportion(0.3f);
+        setHeightProportion(0.15f);
     }
 
     @Override
     public void resize(Rect worldBounds) {
         super.resize(worldBounds);
-        setTop(worldBounds.getTop() - 0.15f);
+        setTop(worldBounds.getTop() - 0.25f);
     }
 
     @Override

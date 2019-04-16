@@ -17,7 +17,7 @@ public class Asteroid extends Sprite {
         float vx = Rnd.nextFloat(-0.005f, 0.005f);
         float vy = Rnd.nextFloat(-0.5f, -0.1f);
         v = new Vector2(vx, vy);
-        float SIZE = Rnd.nextFloat(0.005f,0.05f);
+        float SIZE = Rnd.nextFloat(0.01f,0.05f);
         setHeightProportion(SIZE);
     }
 

@@ -11,7 +11,7 @@ import com.greencode.game.sprite.Background;
 import com.greencode.game.sprite.ButtonCredits;
 import com.greencode.game.sprite.ButtonExit;
 import com.greencode.game.sprite.ButtonStart;
-import com.greencode.game.sprite.GameName;
+import com.greencode.game.sprite.ButtonTutorial;
 
 public class MenuScreen extends BaseScreen {
 
@@ -20,7 +20,7 @@ public class MenuScreen extends BaseScreen {
     private Background background;
     private ButtonExit buttonExit;
     private ButtonStart buttonStart;
-    private GameName gameName;
+    private ButtonTutorial buttonTutorial;
     private TextureAtlas buttonsAtlas;
     private ButtonCredits buttonCredits;
 
@@ -33,10 +33,10 @@ public class MenuScreen extends BaseScreen {
         super.show();
         bg = new Texture("textures/Background/background.jpg");
         background = new Background(new TextureRegion(bg));
-        buttonsAtlas = new TextureAtlas("textures/Atlas/menu.pack");
+        buttonsAtlas = new TextureAtlas("cuteTextures/atlas/buttons.pack");
         buttonExit = new ButtonExit(buttonsAtlas);
         buttonStart = new ButtonStart(buttonsAtlas,game);
-        gameName = new GameName(buttonsAtlas);
+        buttonTutorial = new ButtonTutorial(buttonsAtlas);
         buttonCredits = new ButtonCredits(buttonsAtlas);
     }
 
@@ -46,7 +46,7 @@ public class MenuScreen extends BaseScreen {
         background.resize(worldBounds);
         buttonExit.resize(worldBounds);
         buttonStart.resize(worldBounds);
-        gameName.resize(worldBounds);
+        buttonTutorial.resize(worldBounds);
         buttonCredits.resize(worldBounds);
     }
 
@@ -66,7 +66,7 @@ public class MenuScreen extends BaseScreen {
         background.draw(batch);
         buttonExit.draw(batch);
         buttonStart.draw(batch);
-        gameName.draw(batch);
+        buttonTutorial.draw(batch);
         buttonCredits.draw(batch);
         batch.end();
     }
@@ -82,6 +82,7 @@ public class MenuScreen extends BaseScreen {
         buttonExit.touchDown(touch,pointer);
         buttonStart.touchDown(touch,pointer);
         buttonCredits.touchDown(touch,pointer);
+        buttonTutorial.touchDown(touch,pointer);
         return false;
     }
 
@@ -90,6 +91,7 @@ public class MenuScreen extends BaseScreen {
         buttonExit.touchUp(touch,pointer);
         buttonStart.touchUp(touch,pointer);
         buttonCredits.touchUp(touch,pointer);
+        buttonTutorial.touchUp(touch,pointer);
         return false;
     }
 }

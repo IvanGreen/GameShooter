@@ -7,14 +7,14 @@ import com.greencode.game.math.Rect;
 public class ButtonCredits extends ScaledTouchUpButton {
 
     public ButtonCredits(TextureAtlas atlas) {
-        super(atlas.findRegion("Creditst_buttons"));
-        setHeightProportion(0.3f);
+        super(atlas.findRegion("credits_normal"));
+        setHeightProportion(0.13f);
     }
 
     @Override
     public void resize(Rect worldBounds) {
         super.resize(worldBounds);
-        setBottom(worldBounds.getBottom() + 0.33f);
+        setBottom(worldBounds.getBottom() + 0.40f);
     }
 
     @Override

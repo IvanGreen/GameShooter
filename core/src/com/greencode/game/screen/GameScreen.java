@@ -9,7 +9,7 @@ import com.greencode.game.base.BaseScreen;
 import com.greencode.game.math.Rect;
 import com.greencode.game.sprite.Asteroid;
 import com.greencode.game.sprite.Background;
-import com.greencode.game.sprite.ButtonOptions;
+import com.greencode.game.sprite.ButtonToMenu;
 import com.greencode.game.sprite.GamerModel;
 
 public class GameScreen extends BaseScreen {
@@ -23,7 +23,7 @@ public class GameScreen extends BaseScreen {
     private TextureAtlas atlas;
     private Asteroid asteroidList[];
     private TextureAtlas buttonsAtlas;
-    private ButtonOptions buttonOptions;
+    private ButtonToMenu buttonToMenu;
 
     public GameScreen(Game game) {
         this.game = game;
@@ -33,14 +33,14 @@ public class GameScreen extends BaseScreen {
     @Override
     public void show() {
         super.show();
-        bg = new Texture("textures/Background/background.jpg");
+        bg = new Texture("textures/Background/backgroundGame.jpg");
         background = new Background(new TextureRegion(bg));
         atlas = new TextureAtlas("cuteTextures/atlas/char.pack");
         gm = new GamerModel(atlas);
         textureAtlas = new TextureAtlas("cuteTextures/atlas/assets.pack");
         asteroidList = new Asteroid[20];
-        buttonsAtlas = new TextureAtlas("textures/Atlas/menu.pack");
-        buttonOptions = new ButtonOptions(buttonsAtlas,game);
+        buttonsAtlas = new TextureAtlas("cuteTextures/atlas/buttons.pack");
+        buttonToMenu = new ButtonToMenu(buttonsAtlas,game);
         for (int i = 0; i < asteroidList.length; i++){
             asteroidList[i] = new Asteroid(textureAtlas,Asteroid.chooseAsteroid());
         }
@@ -54,7 +54,7 @@ public class GameScreen extends BaseScreen {
             asteroid.resize(worldBounds);
         }
         gm.resize(worldBounds);
-        buttonOptions.resize(worldBounds);
+        buttonToMenu.resize(worldBounds);
     }
 
     @Override
@@ -78,7 +78,7 @@ public class GameScreen extends BaseScreen {
             asteroid.draw(batch);
         }
         gm.draw(batch);
-        buttonOptions.draw(batch);
+        buttonToMenu.draw(batch);
         batch.end();
     }
 
@@ -93,13 +93,13 @@ public class GameScreen extends BaseScreen {
     @Override
     public boolean touchDown(Vector2 touch, int pointer) {
         gm.touchDown(touch,pointer);
-        buttonOptions.touchDown(touch,pointer);
+        buttonToMenu.touchDown(touch,pointer);
         return false;
     }
 
     @Override
     public boolean touchUp(Vector2 touch, int pointer) {
-        buttonOptions.touchUp(touch,pointer);
+        buttonToMenu.touchUp(touch,pointer);
         return false;
     }
 }
