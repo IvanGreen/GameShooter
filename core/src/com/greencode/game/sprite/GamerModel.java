@@ -47,7 +47,7 @@ public class GamerModel extends Sprite {
     @Override
     public boolean touchDown(Vector2 touch, int pointer) {
         this.touch = touch;
-        v.set(touch.cpy().sub(pos)).setLength(0.05f);
+        v.set(touch.cpy().sub(pos)).setLength(0.2f);
         return false;
     }
 }
