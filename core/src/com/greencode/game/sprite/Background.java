@@ -1,4 +1,4 @@
-package sprite;
+package com.greencode.game.sprite;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.greencode.game.base.Sprite;

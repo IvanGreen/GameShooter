@@ -1,36 +1,53 @@
 package com.greencode.game.screen;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.greencode.game.base.BaseScreen;
 import com.greencode.game.math.Rect;
-
-import sprite.Background;
-import sprite.GamerModel;
+import com.greencode.game.sprite.Background;
+import com.greencode.game.sprite.ButtonExit;
+import com.greencode.game.sprite.ButtonOptions;
+import com.greencode.game.sprite.ButtonStart;
+import com.greencode.game.sprite.GameName;
 
 public class MenuScreen extends BaseScreen {
 
+    private Game game;
     private Texture bg;
-    private sprite.Background background;
-    private Texture gm; //GamerModel
-    private GamerModel gamerModel;
+    private Background background;
+    private ButtonExit buttonExit;
+    private ButtonStart buttonStart;
+    private GameName gameName;
+    private TextureAtlas buttonsAtlas;
+    private ButtonOptions buttonOptions;
+
+    public MenuScreen(Game game) {
+        this.game = game;
+    }
 
     @Override
     public void show() {
         super.show();
-        bg = new Texture("background.jpg");
+        bg = new Texture("textures/Background/background.jpg");
         background = new Background(new TextureRegion(bg));
-        gm = new Texture("badlogic.jpg");
-        gamerModel = new GamerModel(new TextureRegion(gm));
-
+        buttonsAtlas = new TextureAtlas("textures/Atlas/menu.pack");
+        buttonExit = new ButtonExit(buttonsAtlas);
+        buttonStart = new ButtonStart(buttonsAtlas,game);
+        gameName = new GameName(buttonsAtlas);
+        buttonOptions = new ButtonOptions(buttonsAtlas);
     }
 
     @Override
     public void resize(Rect worldBounds) {
         super.resize(worldBounds);
         background.resize(worldBounds);
-        gamerModel.resize(worldBounds);
+        buttonExit.resize(worldBounds);
+        buttonStart.resize(worldBounds);
+        gameName.resize(worldBounds);
+        buttonOptions.resize(worldBounds);
     }
 
     @Override
@@ -41,13 +58,16 @@ public class MenuScreen extends BaseScreen {
     }
 
     private void update(float delta){
-        gamerModel.update(delta);
+
     }
 
     private void draw(){
         batch.begin();
         background.draw(batch);
-        gamerModel.draw(batch);
+        buttonExit.draw(batch);
+        buttonStart.draw(batch);
+        gameName.draw(batch);
+        buttonOptions.draw(batch);
         batch.end();
     }
 
@@ -55,12 +75,21 @@ public class MenuScreen extends BaseScreen {
     public void dispose() {
         super.dispose();
         bg.dispose();
-        gm.dispose();
     }
 
     @Override
     public boolean touchDown(Vector2 touch, int pointer) {
-        gamerModel.touchDown(touch,pointer);
+        buttonExit.touchDown(touch,pointer);
+        buttonStart.touchDown(touch,pointer);
+        buttonOptions.touchDown(touch,pointer);
+        return false;
+    }
+
+    @Override
+    public boolean touchUp(Vector2 touch, int pointer) {
+        buttonExit.touchUp(touch,pointer);
+        buttonStart.touchUp(touch,pointer);
+        buttonOptions.touchUp(touch,pointer);
         return false;
     }
 }

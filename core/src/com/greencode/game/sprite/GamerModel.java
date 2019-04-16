@@ -1,21 +1,21 @@
-package sprite;
+package com.greencode.game.sprite;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.greencode.game.base.Sprite;
 import com.greencode.game.math.Rect;
 
 public class GamerModel extends Sprite {
 
-    private float SIZE = 0.2f;
+    private float SIZE = 0.15f;
     private Vector2 touch;
     private Vector2 v;
     private Vector2 buf;
     private Vector2 buf2;
 
-    public GamerModel(TextureRegion region) {
-        super(region);
+    public GamerModel(TextureAtlas atlas) {
+        super(atlas.findRegion("spiked ship"));
         setHeightProportion(SIZE);
         touch = new Vector2();
         buf = new Vector2();
