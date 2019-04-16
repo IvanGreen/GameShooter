@@ -8,7 +8,7 @@ import com.greencode.game.math.Rect;
 
 public class GamerModel extends Sprite {
 
-    private float SIZE = 0.25f;
+    private float SIZE = 0.2f;
     private Vector2 touch;
     private Vector2 v;
     private Vector2 buf;
