@@ -14,7 +14,7 @@ public class MenuScreen extends BaseScreen {
     private Texture bg;
     private sprite.Background background;
     private Texture gm; //GamerModel
-    private sprite.GamerModel gamerModel;
+    private GamerModel gamerModel;
 
     @Override
     public void show() {
@@ -36,6 +36,15 @@ public class MenuScreen extends BaseScreen {
     @Override
     public void render(float delta) {
         super.render(delta);
+        update(delta);
+        draw();
+    }
+
+    private void update(float delta){
+        gamerModel.update(delta);
+    }
+
+    private void draw(){
         batch.begin();
         background.draw(batch);
         gamerModel.draw(batch);
@@ -46,10 +55,12 @@ public class MenuScreen extends BaseScreen {
     public void dispose() {
         super.dispose();
         bg.dispose();
+        gm.dispose();
     }
 
     @Override
     public boolean touchDown(Vector2 touch, int pointer) {
+        gamerModel.touchDown(touch,pointer);
         return false;
     }
 }
