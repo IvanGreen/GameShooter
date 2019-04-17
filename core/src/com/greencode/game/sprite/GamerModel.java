@@ -27,6 +27,7 @@ public class GamerModel extends Sprite {
     public void resize(Rect worldBounds) {
         super.resize(worldBounds);
         setHeightProportion(SIZE);
+        this.pos.set(0f, -0.4f);
     }
 
     @Override
