@@ -16,6 +16,7 @@ public class GamerModel extends Sprite {
     private Vector2 buf3;
     private static int choose = 1;
     private static String type;
+    private Rect worldBounds;
 
 
     public GamerModel(TextureAtlas atlas,String type) {
@@ -33,11 +34,14 @@ public class GamerModel extends Sprite {
         super.resize(worldBounds);
         setHeightProportion(SIZE);
         this.pos.set(0f, -0.4f);
+        this.worldBounds = worldBounds;
     }
 
     @Override
     public void update(float delta) {
         super.update(delta);
+        if (getRight() < worldBounds.getLeft()) setLeft(worldBounds.getRight());
+        if (getLeft() > worldBounds.getRight()) setRight(worldBounds.getLeft());
         touch.y = -0.4f;
         buf.set(touch);
         v.y = 0f;
