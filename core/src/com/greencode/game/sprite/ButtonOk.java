@@ -4,26 +4,26 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.greencode.game.base.ScaledTouchUpButton;
 import com.greencode.game.math.Rect;
-import com.greencode.game.screen.ChoosePlayerScreen;
+import com.greencode.game.screen.GameScreen;
 
-public class ButtonStart extends ScaledTouchUpButton {
+public class ButtonOk extends ScaledTouchUpButton {
 
     private Game game;
 
-    public ButtonStart(TextureAtlas atlas, Game game) {
-        super(atlas.findRegion("play_normal"));
+    public ButtonOk(TextureAtlas atlas, Game game) {
+        super(atlas.findRegion("okl_normal"));
         this.game = game;
-        setHeightProportion(0.15f);
+        setHeightProportion(0.12f);
     }
 
     @Override
     public void resize(Rect worldBounds) {
         super.resize(worldBounds);
-        setTop(worldBounds.getTop() - 0.25f);
+        setBottom(worldBounds.getBottom() + 0.1f);
     }
 
     @Override
     public void action() {
-        game.setScreen(new ChoosePlayerScreen(game));
+        game.setScreen(new GameScreen(game));
     }
 }

@@ -14,9 +14,12 @@ public class GamerModel extends Sprite {
     private Vector2 buf;
     private Vector2 buf2;
     private Vector2 buf3;
+    private static int choose = 1;
+    private static String type;
 
-    public GamerModel(TextureAtlas atlas) {
-        super(atlas.findRegion("backRed"));
+
+    public GamerModel(TextureAtlas atlas,String type) {
+        super(atlas.findRegion(type));
         setHeightProportion(SIZE);
         touch = new Vector2();
         buf = new Vector2();
@@ -57,5 +60,47 @@ public class GamerModel extends Sprite {
         buf3.y = -0.4f;
         v.set(buf3.cpy().sub(pos)).setLength(0.2f);
         return false;
+    }
+
+    public static String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public static int getChoose() {
+        return choose;
+    }
+
+    public static void setChoose(int playerSet) {
+        choose = playerSet;
+    }
+
+    public static String choosePlayer(){
+
+        int choose = getChoose();
+
+        if (choose == 0) type = "moreGreen";
+        if (choose == 1) type = "moreBlue";
+        if (choose == 2) type = "moreLightBlue";
+        if (choose == 3) type = "morePurple";
+        if (choose == 4) type = "moreRed";
+
+        return type;
+    }
+
+    public static String choosePlayModel(){
+
+        int choose = getChoose();
+
+        if (choose == 0) type = "backGreen";
+        if (choose == 1) type = "backBlue";
+        if (choose == 2) type = "backLightBlue";
+        if (choose == 3) type = "backPurple";
+        if (choose == 4) type = "backRed";
+
+        return type;
     }
 }

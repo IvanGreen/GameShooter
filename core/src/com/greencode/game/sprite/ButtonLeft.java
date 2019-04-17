@@ -6,24 +6,31 @@ import com.greencode.game.base.ScaledTouchUpButton;
 import com.greencode.game.math.Rect;
 import com.greencode.game.screen.ChoosePlayerScreen;
 
-public class ButtonStart extends ScaledTouchUpButton {
+public class ButtonLeft extends ScaledTouchUpButton {
 
     private Game game;
 
-    public ButtonStart(TextureAtlas atlas, Game game) {
-        super(atlas.findRegion("play_normal"));
+    public ButtonLeft(TextureAtlas atlas, Game game) {
+        super(atlas.findRegion("left_normal"));
         this.game = game;
-        setHeightProportion(0.15f);
+        setHeightProportion(0.12f);
     }
 
     @Override
     public void resize(Rect worldBounds) {
         super.resize(worldBounds);
-        setTop(worldBounds.getTop() - 0.25f);
+        setLeft(worldBounds.getLeft() + 0.04f);
     }
 
     @Override
     public void action() {
+        int choose = GamerModel.getChoose();
+        if (choose > 0 && choose <= 4){
+            choose--;
+        } else if (choose == 0){
+            choose = 4;
+        }
+        GamerModel.setChoose(choose);
         game.setScreen(new ChoosePlayerScreen(game));
     }
 }
