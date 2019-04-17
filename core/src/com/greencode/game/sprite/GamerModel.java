@@ -96,7 +96,7 @@ public class GamerModel extends Sprite {
         int choose = getChoose();
 
         if (choose == 0) type = "backGreen";
-        if (choose == 1) type = "backBlue";
+        if (choose == 1) type = "backBleu";
         if (choose == 2) type = "backLightBlue";
         if (choose == 3) type = "backPurple";
         if (choose == 4) type = "backRed";

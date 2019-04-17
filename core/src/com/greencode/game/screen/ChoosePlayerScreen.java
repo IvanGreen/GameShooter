@@ -30,6 +30,11 @@ public class ChoosePlayerScreen extends BaseScreen {
         this.game = game;
     }
 
+    /**
+     * Тут реализована смена персонажей через создание экранов, понимаю что не правильно, но пока
+     * мы не проходили как менять что-то не пересоздавая :) Либо я не додумался =(
+     */
+
     @Override
     public void show() {
         super.show();
