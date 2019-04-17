@@ -40,8 +40,7 @@ public class GamerModel extends Sprite {
     @Override
     public void update(float delta) {
         super.update(delta);
-        if (getRight() < worldBounds.getLeft()) setLeft(worldBounds.getRight());
-        if (getLeft() > worldBounds.getRight()) setRight(worldBounds.getLeft());
+        controlBarier();
         touch.y = -0.4f;
         buf.set(touch);
         v.y = 0f;
@@ -50,6 +49,12 @@ public class GamerModel extends Sprite {
         buf2.scl(delta);
         if (buf.sub(pos).len() <= buf2.len()) pos.set(touch);
         else pos.mulAdd(v, delta);
+    }
+
+    public void controlBarier(){
+        if (getRight() < worldBounds.getLeft()) setLeft(worldBounds.getRight());
+        if (getLeft() > worldBounds.getRight()) setRight(worldBounds.getLeft());
+
     }
 
     @Override
