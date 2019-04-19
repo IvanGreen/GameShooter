@@ -1,32 +1,53 @@
 package com.greencode.game.sprite;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.greencode.game.Pool.BulletsPool;
 import com.greencode.game.base.Sprite;
 import com.greencode.game.math.Rect;
 
+
 public class GamerModel extends Sprite {
 
+    private BulletsPool bulletsPool;
+    private TextureRegion bulletRegion;
+    private Vector2 bulletV = new Vector2(0,0.5f);
+
+    private Vector2 v = new Vector2();
+    private Vector2 v0 = new Vector2(0.5f,0);
+
+    private boolean pressedRight;
+    private boolean isPressedLeft;
+
+    private static final int INVALID_POINTER = -1;
+    private int rightPointer = INVALID_POINTER;
+    private int leftPointer = INVALID_POINTER;
+
     private float SIZE = 0.15f;
-    private Vector2 touch;
-    private Vector2 v;
-    private Vector2 buf;
-    private Vector2 buf2;
-    private Vector2 buf3;
     private static int choose = 1;
     private static String type;
     private Rect worldBounds;
 
+    private float reloadInterval = 0.4f;
+    private float reloadTimer;
+
+    private static boolean isGame = false;
+
+
+    public GamerModel(TextureAtlas atlas,String type, BulletsPool bulletsPool) {
+        super(atlas.findRegion(type));
+        this.bulletsPool = bulletsPool;
+        this.bulletRegion = atlas.findRegion("zGoodBullet");
+        this.bulletsPool = bulletsPool;
+        setHeightProportion(SIZE);
+    }
 
     public GamerModel(TextureAtlas atlas,String type) {
         super(atlas.findRegion(type));
         setHeightProportion(SIZE);
-        touch = new Vector2();
-        buf = new Vector2();
-        buf2 = new Vector2();
-        v = new Vector2();
-        buf3 = new Vector2();
     }
 
     @Override
@@ -40,21 +61,24 @@ public class GamerModel extends Sprite {
     @Override
     public void update(float delta) {
         super.update(delta);
+        reloadTimer += delta;
+        if (reloadTimer >= reloadInterval && isGame == true){
+            reloadTimer = 0f;
+            shoot();
+        }
         controlBarrier();
-        touch.y = -0.4f;
-        buf.set(touch);
-        v.y = 0f;
-        buf2.set(v);
-        buf.y = -0.4f;
-        buf2.scl(delta);
-        if (buf.sub(pos).len() <= buf2.len()) pos.set(touch);
-        else pos.mulAdd(v, delta);
+        pos.mulAdd(v,delta);
     }
 
     public void controlBarrier(){
-        if (getRight() < worldBounds.getLeft()) setLeft(worldBounds.getRight());
-        if (getLeft() > worldBounds.getRight()) setRight(worldBounds.getLeft());
-
+        if (getRight() > worldBounds.getRight()){
+            setRight(worldBounds.getRight());
+            stop();
+        }
+        if (getLeft() < worldBounds.getLeft()){
+            setLeft(worldBounds.getLeft());
+            stop();
+        }
     }
 
     @Override
@@ -64,20 +88,85 @@ public class GamerModel extends Sprite {
 
     @Override
     public boolean touchDown(Vector2 touch, int pointer) {
-        this.touch = touch;
-        buf3.x = touch.x;
-        buf3.y = -0.4f;
-        v.set(buf3.cpy().sub(pos)).setLength(0.2f);
+        if (touch.x < worldBounds.pos.x){
+            if (leftPointer != INVALID_POINTER){
+                return false;
+            }
+            leftPointer = pointer;
+            moveLeft();
+        } else {
+            if (rightPointer != INVALID_POINTER) {
+                return false;
+            }
+            rightPointer = pointer;
+            moveRight();
+        }
         return false;
     }
 
-    public static String getType() {
-        return type;
+    @Override
+    public boolean touchUp(Vector2 touch, int pointer) {
+        if (pointer == leftPointer){
+            leftPointer = INVALID_POINTER;
+            if (rightPointer != INVALID_POINTER){
+                moveRight();
+            } else {
+                stop();
+            }
+        } else if (pointer == rightPointer){
+            rightPointer = INVALID_POINTER;
+            if(leftPointer != INVALID_POINTER){
+                moveLeft();
+            } else {
+                stop();
+            }
+        }
+
+        return false;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public boolean keyDown(int keycode) {
+        switch (keycode){
+            case Input.Keys.A:
+            case Input.Keys.LEFT:
+                isPressedLeft = true;
+                moveLeft();
+                break;
+            case Input.Keys.D:
+            case Input.Keys.RIGHT:
+                pressedRight = true;
+                moveRight();
+                break;
+            case Input.Keys.UP:
+                shoot();
+        }
+        return false;
     }
+
+    public boolean keyUp(int keycode) {
+        switch (keycode){
+            case Input.Keys.A:
+            case Input.Keys.LEFT:
+                isPressedLeft = false;
+                if (pressedRight) {
+                    moveRight();
+                } else {
+                    stop();
+                }
+                break;
+            case Input.Keys.D:
+            case Input.Keys.RIGHT:
+                pressedRight = false;
+                if (isPressedLeft){
+                    moveLeft();
+                } else {
+                    stop();
+                }
+                break;
+        }
+        return false;
+    }
+
 
     public static int getChoose() {
         return choose;
@@ -105,11 +194,32 @@ public class GamerModel extends Sprite {
         int choose = getChoose();
 
         if (choose == 0) type = "backGreen";
-        if (choose == 1) type = "backBleu";
+        if (choose == 1) type = "backBleu"; //ошибка в имени при сборке атласа
         if (choose == 2) type = "backLightBlue";
         if (choose == 3) type = "backPurple";
         if (choose == 4) type = "backRed";
 
         return type;
+    }
+
+    public void shoot(){
+        Bullet bullet = (Bullet) bulletsPool.obtain();
+        bullet.set(this,bulletRegion, pos, bulletV, 0.09f, worldBounds,1);
+    }
+
+    private void moveRight(){
+        v.set(v0);
+    }
+
+    private void moveLeft(){
+        v.set(v0).rotate(180);
+    }
+
+    private void stop(){
+        v.setZero();
+    }
+
+    public static void setGame(boolean game) {
+        isGame = game;
     }
 }

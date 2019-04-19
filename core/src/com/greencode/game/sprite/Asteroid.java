@@ -7,6 +7,7 @@ import com.greencode.game.math.Rect;
 import com.greencode.game.math.Rnd;
 import java.util.Random;
 
+
 public class Asteroid extends Sprite {
 
     private Vector2 v;

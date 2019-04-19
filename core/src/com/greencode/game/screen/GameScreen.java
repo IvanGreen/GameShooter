@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.greencode.game.Pool.BulletsPool;
 import com.greencode.game.base.BaseScreen;
 import com.greencode.game.math.Rect;
 import com.greencode.game.sprite.Asteroid;
@@ -25,6 +26,8 @@ public class GameScreen extends BaseScreen {
     private TextureAtlas buttonsAtlas;
     private ButtonToMenu buttonToMenu;
 
+    private BulletsPool bulletsPool;
+
     public GameScreen(Game game) {
         this.game = game;
     }
@@ -33,10 +36,12 @@ public class GameScreen extends BaseScreen {
     @Override
     public void show() {
         super.show();
+        GamerModel.setGame(true);
         bg = new Texture("textures/Background/backgroundGame.jpg");
         background = new Background(new TextureRegion(bg));
         atlas = new TextureAtlas("cuteTextures/atlas/char.pack");
-        gm = new GamerModel(atlas,GamerModel.choosePlayModel());
+        bulletsPool = new BulletsPool();
+        gm = new GamerModel(atlas,GamerModel.choosePlayModel(),bulletsPool);
         textureAtlas = new TextureAtlas("cuteTextures/atlas/assets.pack");
         asteroidList = new Asteroid[20];
         buttonsAtlas = new TextureAtlas("cuteTextures/atlas/buttons.pack");
@@ -61,6 +66,7 @@ public class GameScreen extends BaseScreen {
     public void render(float delta) {
         super.render(delta);
         update(delta);
+        freeAllDestroyedSprites();
         draw();
     }
 
@@ -69,6 +75,11 @@ public class GameScreen extends BaseScreen {
             asteroid.update(delta);
         }
         gm.update(delta);
+        bulletsPool.updateActiveSprites(delta);
+    }
+
+    private void freeAllDestroyedSprites(){
+        bulletsPool.freeAllDestroyedActiveSprites();
     }
 
     private void draw(){
@@ -79,6 +90,7 @@ public class GameScreen extends BaseScreen {
         }
         gm.draw(batch);
         buttonToMenu.draw(batch);
+        bulletsPool.drawActiveSprites(batch);
         batch.end();
     }
 
@@ -88,6 +100,7 @@ public class GameScreen extends BaseScreen {
         bg.dispose();
         atlas.dispose();
         textureAtlas.dispose();
+        bulletsPool.dispose();
     }
 
     @Override
@@ -100,6 +113,19 @@ public class GameScreen extends BaseScreen {
     @Override
     public boolean touchUp(Vector2 touch, int pointer) {
         buttonToMenu.touchUp(touch,pointer);
+        gm.touchUp(touch,pointer);
+        return false;
+    }
+
+    @Override
+    public boolean keyDown(int keycode) {
+        gm.keyDown(keycode);
+        return false;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        gm.keyUp(keycode);
         return false;
     }
 }

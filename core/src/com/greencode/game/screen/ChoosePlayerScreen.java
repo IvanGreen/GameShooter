@@ -38,6 +38,7 @@ public class ChoosePlayerScreen extends BaseScreen {
     @Override
     public void show() {
         super.show();
+        GamerModel.setGame(false);
         bg = new Texture("textures/Background/backgroundGame.jpg");
         background = new Background(new TextureRegion(bg));
         atlas = new TextureAtlas("cuteTextures/atlas/char.pack");
