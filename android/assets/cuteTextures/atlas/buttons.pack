@@ -318,58 +318,65 @@ settings_normal
   orig: 96, 96
   offset: 0, 0
   index: -1
-soundoff_normal
+shoot
   rotate: false
   xy: 687, 1
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
-sound_normal
+soundoff_normal
   rotate: false
   xy: 898, 99
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
-stop_normal
+sound_normal
   rotate: false
   xy: 1124, 197
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
-twitter_normal
+stop_normal
   rotate: false
   xy: 1426, 295
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
-unavailable_normal
+twitter_normal
   rotate: false
   xy: 1712, 393
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
-upload_normal
+unavailable_normal
   rotate: false
   xy: 785, 1
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
-up_normal
+upload_normal
   rotate: false
   xy: 996, 99
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
-warning_normal
+up_normal
   rotate: false
   xy: 1222, 197
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: -1
+warning_normal
+  rotate: false
+  xy: 1524, 295
   size: 96, 96
   orig: 96, 96
   offset: 0, 0

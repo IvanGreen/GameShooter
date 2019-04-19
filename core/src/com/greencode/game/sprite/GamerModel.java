@@ -31,10 +31,8 @@ public class GamerModel extends Sprite {
     private static String type;
     private Rect worldBounds;
 
-    private float reloadInterval = 0.4f;
-    private float reloadTimer;
-
     private static boolean isGame = false;
+    private static boolean isShoot = false;
 
 
     public GamerModel(TextureAtlas atlas,String type, BulletsPool bulletsPool) {
@@ -61,13 +59,9 @@ public class GamerModel extends Sprite {
     @Override
     public void update(float delta) {
         super.update(delta);
-        reloadTimer += delta;
-        if (reloadTimer >= reloadInterval && isGame == true){
-            reloadTimer = 0f;
-            shoot();
-        }
         controlBarrier();
         pos.mulAdd(v,delta);
+        shoot();
     }
 
     public void controlBarrier(){
@@ -88,39 +82,39 @@ public class GamerModel extends Sprite {
 
     @Override
     public boolean touchDown(Vector2 touch, int pointer) {
-        if (touch.x < worldBounds.pos.x){
-            if (leftPointer != INVALID_POINTER){
-                return false;
+            if (touch.x < worldBounds.pos.x) {
+                if (leftPointer != INVALID_POINTER) {
+                    return false;
+                }
+                leftPointer = pointer;
+                moveLeft();
+            } else {
+                if (rightPointer != INVALID_POINTER) {
+                    return false;
+                }
+                rightPointer = pointer;
+                moveRight();
             }
-            leftPointer = pointer;
-            moveLeft();
-        } else {
-            if (rightPointer != INVALID_POINTER) {
-                return false;
-            }
-            rightPointer = pointer;
-            moveRight();
-        }
         return false;
     }
 
     @Override
     public boolean touchUp(Vector2 touch, int pointer) {
-        if (pointer == leftPointer){
-            leftPointer = INVALID_POINTER;
-            if (rightPointer != INVALID_POINTER){
-                moveRight();
-            } else {
-                stop();
+            if (pointer == leftPointer) {
+                leftPointer = INVALID_POINTER;
+                if (rightPointer != INVALID_POINTER) {
+                    moveRight();
+                } else {
+                    stop();
+                }
+            } else if (pointer == rightPointer) {
+                rightPointer = INVALID_POINTER;
+                if (leftPointer != INVALID_POINTER) {
+                    moveLeft();
+                } else {
+                    stop();
+                }
             }
-        } else if (pointer == rightPointer){
-            rightPointer = INVALID_POINTER;
-            if(leftPointer != INVALID_POINTER){
-                moveLeft();
-            } else {
-                stop();
-            }
-        }
 
         return false;
     }
@@ -202,9 +196,16 @@ public class GamerModel extends Sprite {
         return type;
     }
 
+    public static void setIsShoot(boolean isShoot) {
+        GamerModel.isShoot = isShoot;
+    }
+
     public void shoot(){
-        Bullet bullet = (Bullet) bulletsPool.obtain();
-        bullet.set(this,bulletRegion, pos, bulletV, 0.09f, worldBounds,1);
+        if (isShoot) {
+            Bullet bullet = (Bullet) bulletsPool.obtain();
+            bullet.set(this, bulletRegion, pos, bulletV, 0.09f, worldBounds, 1);
+            setIsShoot(false);
+        }
     }
 
     private void moveRight(){

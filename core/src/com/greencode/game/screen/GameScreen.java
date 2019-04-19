@@ -10,6 +10,7 @@ import com.greencode.game.base.BaseScreen;
 import com.greencode.game.math.Rect;
 import com.greencode.game.sprite.Asteroid;
 import com.greencode.game.sprite.Background;
+import com.greencode.game.sprite.ButtonShoot;
 import com.greencode.game.sprite.ButtonToMenu;
 import com.greencode.game.sprite.GamerModel;
 
@@ -25,6 +26,7 @@ public class GameScreen extends BaseScreen {
     private Asteroid asteroidList[];
     private TextureAtlas buttonsAtlas;
     private ButtonToMenu buttonToMenu;
+    private ButtonShoot buttonShoot;
 
     private BulletsPool bulletsPool;
 
@@ -49,6 +51,7 @@ public class GameScreen extends BaseScreen {
         for (int i = 0; i < asteroidList.length; i++){
             asteroidList[i] = new Asteroid(textureAtlas,Asteroid.chooseAsteroid());
         }
+        buttonShoot = new ButtonShoot(buttonsAtlas);
     }
 
     @Override
@@ -60,6 +63,7 @@ public class GameScreen extends BaseScreen {
         }
         gm.resize(worldBounds);
         buttonToMenu.resize(worldBounds);
+        buttonShoot.resize(worldBounds);
     }
 
     @Override
@@ -74,8 +78,8 @@ public class GameScreen extends BaseScreen {
         for (Asteroid asteroid : asteroidList){
             asteroid.update(delta);
         }
-        gm.update(delta);
         bulletsPool.updateActiveSprites(delta);
+        gm.update(delta);
     }
 
     private void freeAllDestroyedSprites(){
@@ -88,9 +92,10 @@ public class GameScreen extends BaseScreen {
         for (Asteroid asteroid : asteroidList){
             asteroid.draw(batch);
         }
-        gm.draw(batch);
         buttonToMenu.draw(batch);
         bulletsPool.drawActiveSprites(batch);
+        buttonShoot.draw(batch);
+        gm.draw(batch);
         batch.end();
     }
 
@@ -107,6 +112,7 @@ public class GameScreen extends BaseScreen {
     public boolean touchDown(Vector2 touch, int pointer) {
         gm.touchDown(touch,pointer);
         buttonToMenu.touchDown(touch,pointer);
+        buttonShoot.touchDown(touch,pointer);
         return false;
     }
 
@@ -114,6 +120,7 @@ public class GameScreen extends BaseScreen {
     public boolean touchUp(Vector2 touch, int pointer) {
         buttonToMenu.touchUp(touch,pointer);
         gm.touchUp(touch,pointer);
+        buttonShoot.touchUp(touch,pointer);
         return false;
     }
 
