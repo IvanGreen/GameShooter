@@ -27,4 +27,5 @@ public class ButtonToMenu extends ScaledTouchUpButton {
     public void action() {
         game.setScreen(new MenuScreen(game));
     }
+
 }

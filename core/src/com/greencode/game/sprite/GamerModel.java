@@ -6,8 +6,10 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.greencode.game.Pool.BulletsPool;
+import com.greencode.game.Pool.EnemiesPool;
 import com.greencode.game.base.Sprite;
 import com.greencode.game.math.Rect;
+import com.greencode.game.math.Rnd;
 
 
 public class GamerModel extends Sprite {
@@ -16,17 +18,20 @@ public class GamerModel extends Sprite {
     private TextureRegion bulletRegion;
     private Vector2 bulletV = new Vector2(0,0.5f);
 
-    private Vector2 v = new Vector2();
-    private Vector2 v0 = new Vector2(0.5f,0);
+    private EnemiesPool enemiesPool;
+    private TextureRegion enemiesRegion;
+    private Vector2 posEnemies = new Vector2(Rnd.nextFloat(-0.3f,0.3f),0.55f);
+    private Vector2 enemiesV = new Vector2(Rnd.nextFloat(-0.2f,0.2f),-0.1f);
+    private float enemiesInterval = 5f;
+    private float enemiesTimer;
+
+    private static Vector2 v = new Vector2();
+    private static Vector2 v0 = new Vector2(0.5f,0);
 
     private boolean pressedRight;
     private boolean isPressedLeft;
 
-    private static final int INVALID_POINTER = -1;
-    private int rightPointer = INVALID_POINTER;
-    private int leftPointer = INVALID_POINTER;
-
-    private float SIZE = 0.15f;
+    private float SIZE = 0.12f;
     private static int choose = 1;
     private static String type;
     private Rect worldBounds;
@@ -35,11 +40,12 @@ public class GamerModel extends Sprite {
     private static boolean isShoot = false;
 
 
-    public GamerModel(TextureAtlas atlas,String type, BulletsPool bulletsPool) {
+    public GamerModel(TextureAtlas atlas,String type, BulletsPool bulletsPool,EnemiesPool enemiesPool) {
         super(atlas.findRegion(type));
-        this.bulletsPool = bulletsPool;
         this.bulletRegion = atlas.findRegion("zGoodBullet");
         this.bulletsPool = bulletsPool;
+        this.enemiesRegion = atlas.findRegion("psy");
+        this.enemiesPool = enemiesPool;
         setHeightProportion(SIZE);
     }
 
@@ -52,7 +58,7 @@ public class GamerModel extends Sprite {
     public void resize(Rect worldBounds) {
         super.resize(worldBounds);
         setHeightProportion(SIZE);
-        this.pos.set(0f, -0.4f);
+        this.pos.set(0f, -0.33f);
         this.worldBounds = worldBounds;
     }
 
@@ -62,6 +68,11 @@ public class GamerModel extends Sprite {
         controlBarrier();
         pos.mulAdd(v,delta);
         shoot();
+        enemiesTimer += delta;
+        if(enemiesTimer >= enemiesInterval) {
+            enemiesTimer = 0;
+            startEnemies();
+        }
     }
 
     public void controlBarrier(){
@@ -82,40 +93,11 @@ public class GamerModel extends Sprite {
 
     @Override
     public boolean touchDown(Vector2 touch, int pointer) {
-            if (touch.x < worldBounds.pos.x) {
-                if (leftPointer != INVALID_POINTER) {
-                    return false;
-                }
-                leftPointer = pointer;
-                moveLeft();
-            } else {
-                if (rightPointer != INVALID_POINTER) {
-                    return false;
-                }
-                rightPointer = pointer;
-                moveRight();
-            }
         return false;
     }
 
     @Override
     public boolean touchUp(Vector2 touch, int pointer) {
-            if (pointer == leftPointer) {
-                leftPointer = INVALID_POINTER;
-                if (rightPointer != INVALID_POINTER) {
-                    moveRight();
-                } else {
-                    stop();
-                }
-            } else if (pointer == rightPointer) {
-                rightPointer = INVALID_POINTER;
-                if (leftPointer != INVALID_POINTER) {
-                    moveLeft();
-                } else {
-                    stop();
-                }
-            }
-
         return false;
     }
 
@@ -132,7 +114,8 @@ public class GamerModel extends Sprite {
                 moveRight();
                 break;
             case Input.Keys.UP:
-                shoot();
+            case Input.Keys.SPACE:
+                setIsShoot(true);
         }
         return false;
     }
@@ -188,7 +171,7 @@ public class GamerModel extends Sprite {
         int choose = getChoose();
 
         if (choose == 0) type = "backGreen";
-        if (choose == 1) type = "backBleu"; //ошибка в имени при сборке атласа
+        if (choose == 1) type = "backBlue";
         if (choose == 2) type = "backLightBlue";
         if (choose == 3) type = "backPurple";
         if (choose == 4) type = "backRed";
@@ -208,19 +191,32 @@ public class GamerModel extends Sprite {
         }
     }
 
-    private void moveRight(){
-        v.set(v0);
+    public void startEnemies() {
+        if (isGame) {
+            Enemy enemy = (Enemy) enemiesPool.obtain();
+            posEnemies = new Vector2(Rnd.nextFloat(-0.3f,0.3f),0.55f);
+            enemiesV = new Vector2(Rnd.nextFloat(-0.2f,0.2f),-0.1f);
+            enemy.set(worldBounds, enemiesRegion, 3, posEnemies, enemiesV, 0.1f);
+        }
     }
 
-    private void moveLeft(){
-        v.set(v0).rotate(180);
-    }
-
-    private void stop(){
-        v.setZero();
+    public static boolean isGame() {
+        return isGame;
     }
 
     public static void setGame(boolean game) {
         isGame = game;
+    }
+
+    public static void moveRight(){
+        v.set(v0);
+    }
+
+    public static void moveLeft(){
+        v.set(v0).rotate(180);
+    }
+
+    public static void stop(){
+        v.setZero();
     }
 }

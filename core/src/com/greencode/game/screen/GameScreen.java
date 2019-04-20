@@ -6,10 +6,13 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.greencode.game.Pool.BulletsPool;
+import com.greencode.game.Pool.EnemiesPool;
 import com.greencode.game.base.BaseScreen;
 import com.greencode.game.math.Rect;
 import com.greencode.game.sprite.Asteroid;
 import com.greencode.game.sprite.Background;
+import com.greencode.game.sprite.ButtonLeft;
+import com.greencode.game.sprite.ButtonRight;
 import com.greencode.game.sprite.ButtonShoot;
 import com.greencode.game.sprite.ButtonToMenu;
 import com.greencode.game.sprite.GamerModel;
@@ -20,15 +23,20 @@ public class GameScreen extends BaseScreen {
 
     private Texture bg;
     private Background background;
+
     private GamerModel gm; //spaceShip GamerModel
-    private TextureAtlas textureAtlas;
     private TextureAtlas atlas;
+
     private Asteroid asteroidList[];
-    private TextureAtlas buttonsAtlas;
+
     private ButtonToMenu buttonToMenu;
     private ButtonShoot buttonShoot;
+    private ButtonRight buttonRight;
+    private ButtonLeft buttonLeft;
 
     private BulletsPool bulletsPool;
+    private EnemiesPool enemiesPool;
+
 
     public GameScreen(Game game) {
         this.game = game;
@@ -41,17 +49,18 @@ public class GameScreen extends BaseScreen {
         GamerModel.setGame(true);
         bg = new Texture("textures/Background/backgroundGame.jpg");
         background = new Background(new TextureRegion(bg));
-        atlas = new TextureAtlas("cuteTextures/atlas/char.pack");
+        atlas = new TextureAtlas("cuteTextures/atlas/allpack.pack");
         bulletsPool = new BulletsPool();
-        gm = new GamerModel(atlas,GamerModel.choosePlayModel(),bulletsPool);
-        textureAtlas = new TextureAtlas("cuteTextures/atlas/assets.pack");
+        enemiesPool = new EnemiesPool();
+        gm = new GamerModel(atlas,GamerModel.choosePlayModel(),bulletsPool,enemiesPool);
         asteroidList = new Asteroid[20];
-        buttonsAtlas = new TextureAtlas("cuteTextures/atlas/buttons.pack");
-        buttonToMenu = new ButtonToMenu(buttonsAtlas,game);
+        buttonToMenu = new ButtonToMenu(atlas,game);
         for (int i = 0; i < asteroidList.length; i++){
-            asteroidList[i] = new Asteroid(textureAtlas,Asteroid.chooseAsteroid());
+            asteroidList[i] = new Asteroid(atlas,Asteroid.chooseAsteroid());
         }
-        buttonShoot = new ButtonShoot(buttonsAtlas);
+        buttonShoot = new ButtonShoot(atlas);
+        buttonRight = new ButtonRight(atlas);
+        buttonLeft = new ButtonLeft(atlas);
     }
 
     @Override
@@ -63,7 +72,9 @@ public class GameScreen extends BaseScreen {
         }
         gm.resize(worldBounds);
         buttonToMenu.resize(worldBounds);
+        buttonRight.resize(worldBounds);
         buttonShoot.resize(worldBounds);
+        buttonLeft.resize(worldBounds);
     }
 
     @Override
@@ -79,11 +90,13 @@ public class GameScreen extends BaseScreen {
             asteroid.update(delta);
         }
         bulletsPool.updateActiveSprites(delta);
+        enemiesPool.updateActiveSprites(delta);
         gm.update(delta);
     }
 
     private void freeAllDestroyedSprites(){
         bulletsPool.freeAllDestroyedActiveSprites();
+        enemiesPool.freeAllDestroyedActiveSprites();
     }
 
     private void draw(){
@@ -94,7 +107,10 @@ public class GameScreen extends BaseScreen {
         }
         buttonToMenu.draw(batch);
         bulletsPool.drawActiveSprites(batch);
+        enemiesPool.drawActiveSprites(batch);
         buttonShoot.draw(batch);
+        buttonRight.draw(batch);
+        buttonLeft.draw(batch);
         gm.draw(batch);
         batch.end();
     }
@@ -104,8 +120,8 @@ public class GameScreen extends BaseScreen {
         super.dispose();
         bg.dispose();
         atlas.dispose();
-        textureAtlas.dispose();
         bulletsPool.dispose();
+        enemiesPool.dispose();
     }
 
     @Override
@@ -113,6 +129,8 @@ public class GameScreen extends BaseScreen {
         gm.touchDown(touch,pointer);
         buttonToMenu.touchDown(touch,pointer);
         buttonShoot.touchDown(touch,pointer);
+        buttonRight.touchDown(touch,pointer);
+        buttonLeft.touchDown(touch,pointer);
         return false;
     }
 
@@ -121,6 +139,8 @@ public class GameScreen extends BaseScreen {
         buttonToMenu.touchUp(touch,pointer);
         gm.touchUp(touch,pointer);
         buttonShoot.touchUp(touch,pointer);
+        buttonRight.touchUp(touch,pointer);
+        buttonLeft.touchUp(touch,pointer);
         return false;
     }
 

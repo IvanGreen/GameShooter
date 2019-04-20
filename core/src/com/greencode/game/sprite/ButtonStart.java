@@ -26,4 +26,5 @@ public class ButtonStart extends ScaledTouchUpButton {
     public void action() {
         game.setScreen(new ChoosePlayerScreen(game));
     }
+
 }

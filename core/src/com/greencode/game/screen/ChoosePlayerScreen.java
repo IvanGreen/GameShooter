@@ -22,7 +22,6 @@ public class ChoosePlayerScreen extends BaseScreen {
     private GamerModel gm; //spaceShip GamerModel
     private TextureAtlas atlas;
     private ButtonLeft buttonLeft;
-    private TextureAtlas buttonsAtlas;
     private ButtonRight buttonRight;
     private ButtonOk buttonOk;
 
@@ -41,12 +40,11 @@ public class ChoosePlayerScreen extends BaseScreen {
         GamerModel.setGame(false);
         bg = new Texture("textures/Background/backgroundGame.jpg");
         background = new Background(new TextureRegion(bg));
-        atlas = new TextureAtlas("cuteTextures/atlas/char.pack");
+        atlas = new TextureAtlas("cuteTextures/atlas/allpack.pack");
         gm = new GamerModel(atlas,GamerModel.choosePlayer());
-        buttonsAtlas = new TextureAtlas("cuteTextures/atlas/buttons.pack");
-        buttonLeft = new ButtonLeft(buttonsAtlas,game);
-        buttonRight = new ButtonRight(buttonsAtlas,game);
-        buttonOk = new ButtonOk(buttonsAtlas,game);
+        buttonLeft = new ButtonLeft(atlas,game);
+        buttonRight = new ButtonRight(atlas,game);
+        buttonOk = new ButtonOk(atlas,game);
     }
 
     @Override
@@ -86,7 +84,6 @@ public class ChoosePlayerScreen extends BaseScreen {
     public void dispose() {
         super.dispose();
         bg.dispose();
-        buttonsAtlas.dispose();
         atlas.dispose();
     }
 

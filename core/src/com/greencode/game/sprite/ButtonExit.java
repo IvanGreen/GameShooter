@@ -23,5 +23,4 @@ public class ButtonExit extends ScaledTouchUpButton {
         Gdx.app.exit();
     }
 
-
 }

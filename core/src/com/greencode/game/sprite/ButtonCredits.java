@@ -21,4 +21,5 @@ public class ButtonCredits extends ScaledTouchUpButton {
     public void action() {
 
     }
+
 }

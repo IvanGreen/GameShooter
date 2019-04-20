@@ -19,6 +19,8 @@ public abstract class ScaledTouchUpButton extends Sprite {
         if (pressed || !isMe(touch)){
             return false;
         }
+        if (isMe(touch)){
+        }
         this.pointer = pointer;
         scale = PRESS_SCALE;
         pressed = true;

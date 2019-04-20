@@ -21,4 +21,5 @@ public class ButtonTutorial extends ScaledTouchUpButton {
     public void action() {
 
     }
+
 }

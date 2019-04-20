@@ -33,7 +33,7 @@ public class MenuScreen extends BaseScreen {
         super.show();
         bg = new Texture("textures/Background/background.jpg");
         background = new Background(new TextureRegion(bg));
-        buttonsAtlas = new TextureAtlas("cuteTextures/atlas/buttons.pack");
+        buttonsAtlas = new TextureAtlas("cuteTextures/atlas/allpack.pack");
         buttonExit = new ButtonExit(buttonsAtlas);
         buttonStart = new ButtonStart(buttonsAtlas,game);
         buttonTutorial = new ButtonTutorial(buttonsAtlas);
