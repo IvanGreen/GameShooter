@@ -30,8 +30,8 @@ public class GamerModel extends Sprite {
     private static Vector2 v = new Vector2();
     private static Vector2 v0 = new Vector2(0.5f,0);
 
-    private boolean pressedRight;
-    private boolean isPressedLeft;
+    private static boolean pressedRight;
+    private static boolean isPressedLeft;
 
     private float SIZE = 0.12f;
     private static int choose = 1;
@@ -223,5 +223,21 @@ public class GamerModel extends Sprite {
 
     public static void stop(){
         v.setZero();
+    }
+
+    public static boolean isPressedRight() {
+        return pressedRight;
+    }
+
+    public static void setPressedRight(boolean pressedRight) {
+        GamerModel.pressedRight = pressedRight;
+    }
+
+    public static boolean isIsPressedLeft() {
+        return isPressedLeft;
+    }
+
+    public static void setIsPressedLeft(boolean isPressedLeft) {
+        GamerModel.isPressedLeft = isPressedLeft;
     }
 }

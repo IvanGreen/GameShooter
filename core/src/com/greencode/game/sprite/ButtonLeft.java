@@ -52,6 +52,7 @@ public class ButtonLeft extends ScaledTouchUpButton {
     public boolean touchDown(Vector2 touch, int pointer) {
         super.touchDown(touch, pointer);
         if (GamerModel.isGame() && isMe(touch)) {
+            GamerModel.setIsPressedLeft(true);
             GamerModel.moveLeft();
 
         }
@@ -62,7 +63,12 @@ public class ButtonLeft extends ScaledTouchUpButton {
     public boolean touchUp(Vector2 touch, int pointer) {
         super.touchUp(touch, pointer);
         if (GamerModel.isGame() && isMe(touch)) {
-            GamerModel.stop();
+            GamerModel.setIsPressedLeft(false);
+            if (GamerModel.isPressedRight()){
+                GamerModel.moveRight();
+            } else {
+                GamerModel.stop();
+            }
 
         }
         return false;
