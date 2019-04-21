@@ -1,6 +1,9 @@
 package com.greencode.game.screen;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -37,6 +40,7 @@ public class GameScreen extends BaseScreen {
     private BulletsPool bulletsPool;
     private EnemiesPool enemiesPool;
 
+    Music music = Gdx.audio.newMusic(Gdx.files.internal("music_assets/music/game.mp3"));
 
     public GameScreen(Game game) {
         this.game = game;
@@ -92,6 +96,7 @@ public class GameScreen extends BaseScreen {
         bulletsPool.updateActiveSprites(delta);
         enemiesPool.updateActiveSprites(delta);
         gm.update(delta);
+        updateMusic();
     }
 
     private void freeAllDestroyedSprites(){
@@ -122,6 +127,7 @@ public class GameScreen extends BaseScreen {
         atlas.dispose();
         bulletsPool.dispose();
         enemiesPool.dispose();
+        music.dispose();
     }
 
     @Override
@@ -154,5 +160,13 @@ public class GameScreen extends BaseScreen {
     public boolean keyUp(int keycode) {
         gm.keyUp(keycode);
         return false;
+    }
+
+    public void updateMusic(){
+        boolean isPlaying = music.isPlaying();
+        if(!isPlaying){
+            music.play();
+            music.setLooping(true);
+        }
     }
 }

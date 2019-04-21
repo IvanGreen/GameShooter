@@ -1,6 +1,8 @@
 package com.greencode.game.sprite;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -38,6 +40,8 @@ public class GamerModel extends Sprite {
 
     private static boolean isGame = false;
     private static boolean isShoot = false;
+
+    Sound sound = Gdx.audio.newSound(Gdx.files.internal("music_assets/sound/bullet.wav"));
 
 
     public GamerModel(TextureAtlas atlas,String type, BulletsPool bulletsPool,EnemiesPool enemiesPool) {
@@ -187,6 +191,7 @@ public class GamerModel extends Sprite {
         if (isShoot) {
             Bullet bullet = (Bullet) bulletsPool.obtain();
             bullet.set(this, bulletRegion, pos, bulletV, 0.09f, worldBounds, 1);
+            sound.play();
             setIsShoot(false);
         }
     }

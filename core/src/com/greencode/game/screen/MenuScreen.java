@@ -1,6 +1,8 @@
 package com.greencode.game.screen;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -23,6 +25,7 @@ public class MenuScreen extends BaseScreen {
     private ButtonTutorial buttonTutorial;
     private TextureAtlas buttonsAtlas;
     private ButtonCredits buttonCredits;
+    static Music music = Gdx.audio.newMusic(Gdx.files.internal("music_assets/music/start.mp3"));
 
     public MenuScreen(Game game) {
         this.game = game;
@@ -31,6 +34,8 @@ public class MenuScreen extends BaseScreen {
     @Override
     public void show() {
         super.show();
+        music.play();
+        music.setLooping(true);
         bg = new Texture("textures/Background/background.jpg");
         background = new Background(new TextureRegion(bg));
         buttonsAtlas = new TextureAtlas("cuteTextures/atlas/allpack.pack");
@@ -93,5 +98,9 @@ public class MenuScreen extends BaseScreen {
         buttonCredits.touchUp(touch,pointer);
         buttonTutorial.touchUp(touch,pointer);
         return false;
+    }
+
+    public static void stopMusic(){
+        music.stop();
     }
 }

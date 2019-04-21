@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.greencode.game.base.ScaledTouchUpButton;
 import com.greencode.game.math.Rect;
 import com.greencode.game.screen.GameScreen;
+import com.greencode.game.screen.MenuScreen;
 
 public class ButtonOk extends ScaledTouchUpButton {
 
@@ -25,6 +26,7 @@ public class ButtonOk extends ScaledTouchUpButton {
     @Override
     public void action() {
         game.setScreen(new GameScreen(game));
+        MenuScreen.stopMusic();
     }
 
 }
