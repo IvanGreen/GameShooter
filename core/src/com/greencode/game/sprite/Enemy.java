@@ -1,46 +1,70 @@
 package com.greencode.game.sprite;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.greencode.game.base.Sprite;
+import com.greencode.game.Pool.BulletsPool;
+import com.greencode.game.base.Ship;
 import com.greencode.game.math.Rect;
 
-public class Enemy extends Sprite {
 
-    private Rect worldBounds;
-    private Vector2 v = new Vector2();
-    private Vector2 buf = new Vector2();
-    private int HP;
+public class Enemy extends Ship {
 
+    private enum State {DESCENT, FIGHT}
+    private State state;
+    private Vector2 descentV;
 
-    public Enemy(){regions = new TextureRegion[1];}
+    private GamerModel gamerModel;
 
-    public void set(
-            Rect worldBounds,
-            TextureRegion region,
-            int HP,
-            Vector2 pos0,
-            Vector2 v0,
-            float height
-    ){
+    public Enemy(BulletsPool bulletPool, Sound shootSound, Rect worldBounds, GamerModel gamerModel) {
+        this.gamerModel = gamerModel;
+        this.bulletsPool = bulletPool;
         this.worldBounds = worldBounds;
-        this.regions[0] = region;
-        this.HP = HP;
-        this.pos.set(pos0);
-        this.v.set(v0);
-        setHeightProportion(height);
+        this.shootSound = shootSound;
+        this.descentV = new Vector2(0, -0.3f);
     }
 
     @Override
     public void update(float delta) {
-        pos.mulAdd(v,delta);
-        if (isOutside(worldBounds)){
+        super.update(delta);
+        if (getTop() <= worldBounds.getTop()) {
+            state = State.FIGHT;
+            v.set(v0);
+        }
+        if (state == State.FIGHT) {
+            reloadTimer += delta;
+            if (reloadTimer >= reloadInterval) {
+                reloadTimer = 0f;
+                shoot();
+            }
+        }
+        if (isOutside(worldBounds)) {
             destroy();
         }
-        if (getRight() > worldBounds.getRight() || getLeft() < worldBounds.getLeft()){
-            buf.x = v.x;
-            buf.rotate(90);
-            v.x = buf.x;
-        }
+    }
+
+    public void set(
+            TextureRegion[] regions,
+            Vector2 v0,
+            TextureRegion bulletRegion,
+            float bulletHeight,
+            float bulletVY,
+            int bulletDamage,
+            float reloadInterval,
+            float height,
+            int hp
+    ) {
+        this.regions = regions;
+        this.v0.set(v0);
+        this.bulletRegion = bulletRegion;
+        this.bulletHeight = bulletHeight;
+        this.bulletV.set(0, bulletVY);
+        this.damage = bulletDamage;
+        this.reloadInterval = reloadInterval;
+        setHeightProportion(height);
+        this.hp = hp;
+        v.set(descentV);
+        reloadTimer = reloadInterval;
+        state = State.DESCENT;
     }
 }

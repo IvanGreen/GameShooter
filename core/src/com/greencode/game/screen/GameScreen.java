@@ -19,6 +19,7 @@ import com.greencode.game.sprite.ButtonRight;
 import com.greencode.game.sprite.ButtonShoot;
 import com.greencode.game.sprite.ButtonToMenu;
 import com.greencode.game.sprite.GamerModel;
+import com.greencode.game.utils.EnemiesGenerator;
 
 public class GameScreen extends BaseScreen {
 
@@ -40,8 +41,11 @@ public class GameScreen extends BaseScreen {
     private BulletsPool bulletsPool;
     private EnemiesPool enemiesPool;
 
-    Music music = Gdx.audio.newMusic(Gdx.files.internal("music_assets/music/game.mp3"));
+    private EnemiesGenerator enemiesGenerator;
 
+    Music music = Gdx.audio.newMusic(Gdx.files.internal("music_assets/music/game.mp3"));
+    Sound shootSound = Gdx.audio.newSound(Gdx.files.internal("music_assets/sound/bullet.wav"));
+    Sound enemiesShootSound = Gdx.audio.newSound(Gdx.files.internal("music_assets/sound/bullet.wav"));
     public GameScreen(Game game) {
         this.game = game;
     }
@@ -55,8 +59,9 @@ public class GameScreen extends BaseScreen {
         background = new Background(new TextureRegion(bg));
         atlas = new TextureAtlas("cuteTextures/atlas/allpack.pack");
         bulletsPool = new BulletsPool();
-        enemiesPool = new EnemiesPool();
-        gm = new GamerModel(atlas,GamerModel.choosePlayModel(),bulletsPool,enemiesPool);
+        enemiesPool = new EnemiesPool(bulletsPool,enemiesShootSound,worldBounds,gm);
+        enemiesGenerator = new EnemiesGenerator(atlas,enemiesPool,worldBounds);
+        gm = new GamerModel(atlas,GamerModel.choosePlayModel(),bulletsPool,shootSound);
         asteroidList = new Asteroid[20];
         buttonToMenu = new ButtonToMenu(atlas,game);
         for (int i = 0; i < asteroidList.length; i++){
@@ -86,6 +91,7 @@ public class GameScreen extends BaseScreen {
         super.render(delta);
         update(delta);
         freeAllDestroyedSprites();
+        checkCollisions();
         draw();
     }
 
@@ -97,11 +103,16 @@ public class GameScreen extends BaseScreen {
         enemiesPool.updateActiveSprites(delta);
         gm.update(delta);
         updateMusic();
+        enemiesGenerator.generate(delta);
     }
 
     private void freeAllDestroyedSprites(){
         bulletsPool.freeAllDestroyedActiveSprites();
         enemiesPool.freeAllDestroyedActiveSprites();
+    }
+
+    private void checkCollisions() {
+
     }
 
     private void draw(){

@@ -1,69 +1,49 @@
 package com.greencode.game.sprite;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.greencode.game.Pool.BulletsPool;
-import com.greencode.game.Pool.EnemiesPool;
-import com.greencode.game.base.Sprite;
+import com.greencode.game.base.Ship;
 import com.greencode.game.math.Rect;
-import com.greencode.game.math.Rnd;
 
 
-public class GamerModel extends Sprite {
-
-    private BulletsPool bulletsPool;
-    private TextureRegion bulletRegion;
-    private Vector2 bulletV = new Vector2(0,0.5f);
-
-    private EnemiesPool enemiesPool;
-    private TextureRegion enemiesRegion;
-    private Vector2 posEnemies = new Vector2(Rnd.nextFloat(-0.3f,0.3f),0.55f);
-    private Vector2 enemiesV = new Vector2(Rnd.nextFloat(-0.2f,0.2f),-0.1f);
-    private float enemiesInterval = 5f;
-    private float enemiesTimer;
-
-    private static Vector2 v = new Vector2();
-    private static Vector2 v0 = new Vector2(0.5f,0);
+public class GamerModel extends Ship {
 
     private static boolean pressedRight;
     private static boolean isPressedLeft;
 
-    private float SIZE = 0.12f;
     private static int choose = 1;
     private static String type;
-    private Rect worldBounds;
 
     private static boolean isGame = false;
     private static boolean isShoot = false;
 
-    Sound sound = Gdx.audio.newSound(Gdx.files.internal("music_assets/sound/bullet.wav"));
+    private static Vector2 v = new Vector2();
+    private static Vector2 v0 = new Vector2(0.5f,0);
 
-
-    public GamerModel(TextureAtlas atlas,String type, BulletsPool bulletsPool,EnemiesPool enemiesPool) {
-        super(atlas.findRegion(type));
+    public GamerModel(TextureAtlas atlas, String type, BulletsPool bulletsPool, Sound shootSound) {
+        super(atlas,type);
         this.bulletRegion = atlas.findRegion("zGoodBullet");
         this.bulletsPool = bulletsPool;
-        this.enemiesRegion = atlas.findRegion("psy");
-        this.enemiesPool = enemiesPool;
-        setHeightProportion(SIZE);
+        this.shootSound = shootSound;
+        setHeightProportion(0.13f);
+        this.bulletV.set(0f,0.5f);
+        this.bulletHeight = 0.15f;
+        this.damage = 1;
     }
 
     public GamerModel(TextureAtlas atlas,String type) {
-        super(atlas.findRegion(type));
-        setHeightProportion(SIZE);
+        super(atlas,type);
+        setHeightProportion(0.13f);
     }
 
     @Override
     public void resize(Rect worldBounds) {
         super.resize(worldBounds);
-        setHeightProportion(SIZE);
         this.pos.set(0f, -0.33f);
-        this.worldBounds = worldBounds;
     }
 
     @Override
@@ -72,11 +52,6 @@ public class GamerModel extends Sprite {
         controlBarrier();
         pos.mulAdd(v,delta);
         shoot();
-        enemiesTimer += delta;
-        if(enemiesTimer >= enemiesInterval) {
-            enemiesTimer = 0;
-            startEnemies();
-        }
     }
 
     public void controlBarrier(){
@@ -191,17 +166,8 @@ public class GamerModel extends Sprite {
         if (isShoot) {
             Bullet bullet = (Bullet) bulletsPool.obtain();
             bullet.set(this, bulletRegion, pos, bulletV, 0.09f, worldBounds, 1);
-            sound.play();
+            shootSound.play();
             setIsShoot(false);
-        }
-    }
-
-    public void startEnemies() {
-        if (isGame) {
-            Enemy enemy = (Enemy) enemiesPool.obtain();
-            posEnemies = new Vector2(Rnd.nextFloat(-0.3f,0.3f),0.55f);
-            enemiesV = new Vector2(Rnd.nextFloat(-0.2f,0.2f),-0.1f);
-            enemy.set(worldBounds, enemiesRegion, 3, posEnemies, enemiesV, 0.1f);
         }
     }
 

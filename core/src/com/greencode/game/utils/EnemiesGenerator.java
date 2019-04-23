@@ -1,0 +1,110 @@
+package com.greencode.game.utils;
+
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
+import com.greencode.game.Pool.EnemiesPool;
+import com.greencode.game.math.Rect;
+import com.greencode.game.math.Rnd;
+import com.greencode.game.sprite.Enemy;
+
+public class EnemiesGenerator {
+    private static final float ENEMY_SMALL_HEIGHT = 0.1f;
+    private static final float ENEMY_SMALL_BULLET_HEIGHT = 0.06f;
+    private static final float ENEMY_SMALL_BULLET_VY = -0.3f;
+    private static final int ENEMY_SMALL_DAMAGE = 1;
+    private static final float ENEMY_SMALL_RELOAD_INTERVAL = 3f;
+    private static final int ENEMY_SMALL_HP = 1;
+
+    private static final float ENEMY_MEDIUM_HEIGHT = 0.1f;
+    private static final float ENEMY_MEDIUM_BULLET_HEIGHT = 0.08f;
+    private static final float ENEMY_MEDIUM_BULLET_VY = -0.25f;
+    private static final int ENEMY_MEDIUM_DAMAGE = 5;
+    private static final float ENEMY_MEDIUM_RELOAD_INTERVAL = 4f;
+    private static final int ENEMY_MEDIUM_HP = 5;
+
+    private static final float ENEMY_BIG_HEIGHT = 0.2f;
+    private static final float ENEMY_BIG_BULLET_HEIGHT = 0.1f;
+    private static final float ENEMY_BIG_BULLET_VY = -0.3f;
+    private static final int ENEMY_BIG_DAMAGE = 10;
+    private static final float ENEMY_BIG_RELOAD_INTERVAL = 1f;
+    private static final int ENEMY_BIG_HP = 10;
+
+    private Rect worldBounds;
+
+    private float generateInterval = 4f;
+    private float generateTimer;
+
+    private final TextureRegion[] enemySmallRegion;
+    private final TextureRegion[] enemyMediumRegion;
+    private final TextureRegion[] enemyBigRegion;
+
+    private final Vector2 enemySmallV = new Vector2(0, -0.2f);
+    private final Vector2 enemyMediumV = new Vector2(0, -0.03f);
+    private final Vector2 enemyBigV = new Vector2(0, -0.005f);
+
+    private final TextureRegion bulletRegion;
+
+    private final EnemiesPool enemiesPool;
+
+    public EnemiesGenerator(TextureAtlas atlas, EnemiesPool enemyPool, Rect worldBounds) {
+        TextureRegion enemy0 = atlas.findRegion("pear");
+        this.enemySmallRegion = Regions.split(enemy0, 1, 1, 1);
+        TextureRegion enemy1 = atlas.findRegion("psy");
+        this.enemyMediumRegion = Regions.split(enemy1, 1, 1, 1);
+        TextureRegion enemy2 = atlas.findRegion("bee");
+        this.enemyBigRegion = Regions.split(enemy2, 1, 1, 1);
+        this.bulletRegion = atlas.findRegion("zBadBullet");
+        this.enemiesPool = enemyPool;
+        this.worldBounds = worldBounds;
+    }
+
+    public void generate(float delta) {
+        generateTimer += delta;
+        if (generateTimer >= generateInterval) {
+            generateTimer = 0f;
+            Enemy enemy = (Enemy) enemiesPool.obtain();
+            float type = (float) Math.random();
+            if (type < 0.5f) {
+                enemy.set(
+                        enemySmallRegion,
+                        enemySmallV,
+                        bulletRegion,
+                        ENEMY_SMALL_BULLET_HEIGHT,
+                        ENEMY_SMALL_BULLET_VY,
+                        ENEMY_SMALL_DAMAGE,
+                        ENEMY_SMALL_RELOAD_INTERVAL,
+                        ENEMY_SMALL_HEIGHT,
+                        ENEMY_SMALL_HP
+                );
+            } else if (type < 0.85f) {
+                enemy.set(
+                        enemyMediumRegion,
+                        enemyMediumV,
+                        bulletRegion,
+                        ENEMY_MEDIUM_BULLET_HEIGHT,
+                        ENEMY_MEDIUM_BULLET_VY,
+                        ENEMY_MEDIUM_DAMAGE,
+                        ENEMY_MEDIUM_RELOAD_INTERVAL,
+                        ENEMY_MEDIUM_HEIGHT,
+                        ENEMY_MEDIUM_HP
+                );
+            } else {
+                enemy.set(
+                        enemyBigRegion,
+                        enemyBigV,
+                        bulletRegion,
+                        ENEMY_BIG_BULLET_HEIGHT,
+                        ENEMY_BIG_BULLET_VY,
+                        ENEMY_BIG_DAMAGE,
+                        ENEMY_BIG_RELOAD_INTERVAL,
+                        ENEMY_BIG_HEIGHT,
+                        ENEMY_BIG_HP
+                );
+            }
+            enemy.pos.x = Rnd.nextFloat(worldBounds.getLeft() + enemy.getHalfWidth(),
+                    worldBounds.getRight() - enemy.getHalfWidth());
+            enemy.setBottom(worldBounds.getTop());
+        }
+    }
+}
