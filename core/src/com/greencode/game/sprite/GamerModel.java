@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.greencode.game.Pool.BulletsPool;
 import com.greencode.game.base.Ship;
+import com.greencode.game.base.Sprite;
 import com.greencode.game.math.Rect;
 
 

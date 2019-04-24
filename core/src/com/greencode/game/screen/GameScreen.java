@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.greencode.game.Pool.BulletsPool;
 import com.greencode.game.Pool.EnemiesPool;
 import com.greencode.game.base.BaseScreen;
+import com.greencode.game.base.Sprite;
 import com.greencode.game.math.Rect;
 import com.greencode.game.sprite.Asteroid;
 import com.greencode.game.sprite.Background;
@@ -21,6 +22,8 @@ import com.greencode.game.sprite.ButtonToMenu;
 import com.greencode.game.sprite.GamerModel;
 import com.greencode.game.utils.EnemiesGenerator;
 
+import java.util.List;
+
 public class GameScreen extends BaseScreen {
 
     private Game game;
@@ -28,10 +31,11 @@ public class GameScreen extends BaseScreen {
     private Texture bg;
     private Background background;
 
-    private GamerModel gm; //spaceShip GamerModel
+    private GamerModel gm;
     private TextureAtlas atlas;
 
     private Asteroid asteroidList[];
+    private List enemyList;
 
     private ButtonToMenu buttonToMenu;
     private ButtonShoot buttonShoot;
@@ -39,13 +43,14 @@ public class GameScreen extends BaseScreen {
     private ButtonLeft buttonLeft;
 
     private BulletsPool bulletsPool;
-    private EnemiesPool enemiesPool;
 
+    private EnemiesPool enemiesPool;
     private EnemiesGenerator enemiesGenerator;
 
-    Music music = Gdx.audio.newMusic(Gdx.files.internal("music_assets/music/game.mp3"));
-    Sound shootSound = Gdx.audio.newSound(Gdx.files.internal("music_assets/sound/bullet.wav"));
-    Sound enemiesShootSound = Gdx.audio.newSound(Gdx.files.internal("music_assets/sound/bullet.wav"));
+    private Music music = Gdx.audio.newMusic(Gdx.files.internal("music_assets/music/game.mp3"));
+    private Sound shootSound = Gdx.audio.newSound(Gdx.files.internal("music_assets/sound/bullet.wav"));
+    private Sound enemiesShootSound = Gdx.audio.newSound(Gdx.files.internal("music_assets/sound/bullet.wav"));
+
     public GameScreen(Game game) {
         this.game = game;
     }
@@ -111,8 +116,17 @@ public class GameScreen extends BaseScreen {
         enemiesPool.freeAllDestroyedActiveSprites();
     }
 
+    /**
+     * сломал себе весь мозг, но получилось как-то так, толи не могу попасть точка в точку, то ли не работает.
+     * обязательно доделаю в ближайшее время.
+     */
     private void checkCollisions() {
-
+        enemyList = enemiesPool.getActiveObjects();
+        for (Object enemy : enemyList){
+            if (gm.intersect(gm, (Sprite) enemy)) {
+                ((Sprite) enemy).destroy();
+            }
+        }
     }
 
     private void draw(){

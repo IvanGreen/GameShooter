@@ -1,6 +1,7 @@
 package com.greencode.game.base;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.greencode.game.sprite.GamerModel;
 
 import java.util.ArrayList;
 import java.util.List;
