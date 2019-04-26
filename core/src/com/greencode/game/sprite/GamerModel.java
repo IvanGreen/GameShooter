@@ -25,7 +25,7 @@ public class GamerModel extends Ship {
     private static Vector2 v0 = new Vector2(0.5f,0);
 
     public GamerModel(TextureAtlas atlas, String type, BulletsPool bulletsPool, Sound shootSound) {
-        super(atlas,type);
+        super(atlas.findRegion(type),1,5,5);
         this.bulletRegion = atlas.findRegion("zGoodBullet");
         this.bulletsPool = bulletsPool;
         this.shootSound = shootSound;
@@ -37,7 +37,7 @@ public class GamerModel extends Ship {
     }
 
     public GamerModel(TextureAtlas atlas,String type) {
-        super(atlas,type);
+        super(atlas.findRegion(type),1,5,5);
         setHeightProportion(0.13f);
     }
 
@@ -137,11 +137,11 @@ public class GamerModel extends Ship {
 
         int choose = getChoose();
 
-        if (choose == 0) type = "moreGreen";
-        if (choose == 1) type = "moreBlue";
-        if (choose == 2) type = "moreLightBlue";
-        if (choose == 3) type = "morePurple";
-        if (choose == 4) type = "moreRed";
+        if (choose == 0) type = "green";
+        if (choose == 1) type = "blue";
+        if (choose == 2) type = "lightBlue";
+        if (choose == 3) type = "pink";
+        if (choose == 4) type = "red";
 
         return type;
     }
@@ -150,11 +150,11 @@ public class GamerModel extends Ship {
 
         int choose = getChoose();
 
-        if (choose == 0) type = "backGreen";
-        if (choose == 1) type = "backBlue";
-        if (choose == 2) type = "backLightBlue";
-        if (choose == 3) type = "backPurple";
-        if (choose == 4) type = "backRed";
+        if (choose == 0) type = "green";
+        if (choose == 1) type = "blue";
+        if (choose == 2) type = "lightBlue";
+        if (choose == 3) type = "pink";
+        if (choose == 4) type = "red";
 
         return type;
     }

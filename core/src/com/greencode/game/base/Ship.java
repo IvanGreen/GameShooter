@@ -25,8 +25,11 @@ public class Ship extends Sprite {
     protected float reloadInterval;
     protected float reloadTimer;
 
-    public Ship(TextureAtlas atlas,String type) {
-        super(atlas.findRegion(type));
+    protected float damageAnimatedInterval = 0.01f;
+    protected float damageAnimatedTimer = damageAnimatedInterval;
+
+    public Ship(TextureRegion region,int rows, int cols, int frames) {
+        super(region,rows,cols,frames);
         this.v = new Vector2();
         this.v0 = new Vector2();
         this.bulletV = new Vector2();
@@ -48,6 +51,10 @@ public class Ship extends Sprite {
     public void update(float delta) {
         super.update(delta);
         pos.mulAdd(v, delta);
+        damageAnimatedTimer += delta;
+        if(damageAnimatedTimer >= damageAnimatedInterval){
+            frame = 0;
+        }
     }
 
     public void shoot() {
@@ -57,6 +64,8 @@ public class Ship extends Sprite {
     }
 
     public void damage(int damage){
+        frame = 3;
+        damageAnimatedTimer = 0f;
         hp -= damage;
         if (hp <= 0){
             destroy();

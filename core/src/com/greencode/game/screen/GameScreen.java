@@ -11,7 +11,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.greencode.game.Pool.BulletsPool;
 import com.greencode.game.Pool.EnemiesPool;
 import com.greencode.game.base.BaseScreen;
-import com.greencode.game.base.Sprite;
 import com.greencode.game.math.Rect;
 import com.greencode.game.sprite.Asteroid;
 import com.greencode.game.sprite.Background;
@@ -66,9 +65,9 @@ public class GameScreen extends BaseScreen {
         background = new Background(new TextureRegion(bg));
         atlas = new TextureAtlas("cuteTextures/atlas/allpack.pack");
         bulletsPool = new BulletsPool();
+        gm = new GamerModel(atlas,GamerModel.choosePlayModel(),bulletsPool,shootSound);
         enemiesPool = new EnemiesPool(bulletsPool,enemiesShootSound,worldBounds,gm);
         enemiesGenerator = new EnemiesGenerator(atlas,enemiesPool,worldBounds);
-        gm = new GamerModel(atlas,GamerModel.choosePlayModel(),bulletsPool,shootSound);
         asteroidList = new Asteroid[20];
         buttonToMenu = new ButtonToMenu(atlas,game);
         for (int i = 0; i < asteroidList.length; i++){
