@@ -64,7 +64,7 @@ public class Ship extends Sprite {
     }
 
     public void damage(int damage){
-        frame = 3;
+        frame = 1;
         damageAnimatedTimer = 0f;
         hp -= damage;
         if (hp <= 0){

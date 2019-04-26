@@ -172,6 +172,14 @@ public class GamerModel extends Ship {
         }
     }
 
+    public boolean isBulletCollision(Rect bullet){
+        return !(bullet.getRight() < getLeft()
+                || bullet.getLeft() > getRight()
+                || bullet.getBottom() > pos.y
+                || bullet.getTop() < getBottom()
+        );
+    }
+
     public static boolean isGame() {
         return isGame;
     }

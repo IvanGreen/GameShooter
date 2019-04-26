@@ -14,7 +14,7 @@ public class EnemiesGenerator {
     private static final float ENEMY_SMALL_BULLET_VY = -0.3f;
     private static final int ENEMY_SMALL_DAMAGE = 1;
     private static final float ENEMY_SMALL_RELOAD_INTERVAL = 3f;
-    private static final int ENEMY_SMALL_HP = 1;
+    private static final int ENEMY_SMALL_HP = 3;
 
     private static final float ENEMY_MEDIUM_HEIGHT = 0.1f;
     private static final float ENEMY_MEDIUM_BULLET_HEIGHT = 0.08f;
@@ -49,11 +49,11 @@ public class EnemiesGenerator {
 
     public EnemiesGenerator(TextureAtlas atlas, EnemiesPool enemyPool, Rect worldBounds) {
         TextureRegion enemy0 = atlas.findRegion("pear");
-        this.enemySmallRegion = Regions.split(enemy0, 1, 1, 1);
+        this.enemySmallRegion = Regions.split(enemy0, 1, 2, 2);
         TextureRegion enemy1 = atlas.findRegion("psy");
-        this.enemyMediumRegion = Regions.split(enemy1, 1, 1, 1);
+        this.enemyMediumRegion = Regions.split(enemy1, 1, 2, 2);
         TextureRegion enemy2 = atlas.findRegion("bee");
-        this.enemyBigRegion = Regions.split(enemy2, 1, 1, 1);
+        this.enemyBigRegion = Regions.split(enemy2, 1, 2, 2);
         this.bulletRegion = atlas.findRegion("zBadBullet");
         this.enemiesPool = enemyPool;
         this.worldBounds = worldBounds;

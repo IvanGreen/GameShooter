@@ -119,28 +119,37 @@ public class GameScreen extends BaseScreen {
 
     private void checkCollisions() {
         enemyList = enemiesPool.getActiveObjects();
-        for (Enemy enemy : enemyList){
+        for (Enemy enemy : enemyList) {
             if (enemy.isDestroyed()) {
                 continue;
             }
             float minDist = enemy.getHalfWidth() + gm.getHalfWidth();
-            if (enemy.pos.dst(gm.pos) < minDist){
+            if (enemy.pos.dst(gm.pos) < minDist) {
                 enemy.destroy();
                 gm.destroy();
             }
         }
 
         List<Bullet> bulletList = bulletsPool.getActiveObjects();
-        for(Enemy enemy : enemyList){
-            if (enemy.isDestroyed()) {
+
+        for (Bullet bullet : bulletList) {
+            if (bullet.isDestroyed()){
                 continue;
             }
-            for(Bullet bullet : bulletList){
-                if (bullet.getOwner() != gm || bullet.isDestroyed()){
-                    continue;
+            if (bullet.getOwner() == gm) {
+                for (Enemy enemy : enemyList) {
+                    if (enemy.isDestroyed()) {
+                        continue;
+                    }
+
+                    if (enemy.isBulletCollision(bullet)) {
+                        enemy.damage(bullet.getDamage());
+                        bullet.destroy();
+                    }
                 }
-                if (!bullet.isOutside(enemy)){
-                    enemy.damage(bullet.getDamage());
+            } else {
+                if (gm.isBulletCollision(bullet)){
+                    gm.damage(bullet.getDamage());
                     bullet.destroy();
                 }
             }
