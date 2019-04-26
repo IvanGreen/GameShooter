@@ -36,7 +36,6 @@ public class GameScreen extends BaseScreen {
     private TextureAtlas atlas;
 
     private Asteroid asteroidList[];
-    private List<Enemy> enemyList;
 
     private ButtonToMenu buttonToMenu;
     private ButtonShoot buttonShoot;
@@ -105,11 +104,14 @@ public class GameScreen extends BaseScreen {
         for (Asteroid asteroid : asteroidList){
             asteroid.update(delta);
         }
+        if (!gm.isDestroyed()) {
+
+            gm.update(delta);
+            enemiesGenerator.generate(delta);
+        }
+        updateMusic();
         bulletsPool.updateActiveSprites(delta);
         enemiesPool.updateActiveSprites(delta);
-        gm.update(delta);
-        updateMusic();
-        enemiesGenerator.generate(delta);
     }
 
     private void freeAllDestroyedSprites(){
@@ -118,7 +120,8 @@ public class GameScreen extends BaseScreen {
     }
 
     private void checkCollisions() {
-        enemyList = enemiesPool.getActiveObjects();
+        List<Enemy> enemyList = enemiesPool.getActiveObjects();
+
         for (Enemy enemy : enemyList) {
             if (enemy.isDestroyed()) {
                 continue;
@@ -127,6 +130,7 @@ public class GameScreen extends BaseScreen {
             if (enemy.pos.dst(gm.pos) < minDist) {
                 enemy.destroy();
                 gm.destroy();
+                return;
             }
         }
 
@@ -145,12 +149,14 @@ public class GameScreen extends BaseScreen {
                     if (enemy.isBulletCollision(bullet)) {
                         enemy.damage(bullet.getDamage());
                         bullet.destroy();
+                        return;
                     }
                 }
             } else {
                 if (gm.isBulletCollision(bullet)){
                     gm.damage(bullet.getDamage());
                     bullet.destroy();
+                    return;
                 }
             }
         }
