@@ -1,8 +1,6 @@
 package com.greencode.game.math;
 
 import com.badlogic.gdx.math.Vector2;
-import com.greencode.game.base.Sprite;
-import com.greencode.game.sprite.GamerModel;
 
 /**
  * Прямоугольник
@@ -105,12 +103,5 @@ public class Rect {
     @Override
     public String toString() {
         return "Rectangle: pos" + pos + " size(" + getWidth() + ", " + getHeight() + ")";
-    }
-
-    public boolean intersect(Sprite main, Sprite enemy){
-        if (main.pos == enemy.pos){
-            return true;
-        }
-        return false;
     }
 }

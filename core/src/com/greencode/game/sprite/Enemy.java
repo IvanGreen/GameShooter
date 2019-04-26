@@ -38,8 +38,9 @@ public class Enemy extends Ship {
                 shoot();
             }
         }
-        if (isOutside(worldBounds)) {
+        if (getBottom() < worldBounds.getBottom()){
             destroy();
+            gamerModel.damage(damage);
         }
     }
 

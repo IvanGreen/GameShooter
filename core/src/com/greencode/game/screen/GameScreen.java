@@ -15,10 +15,12 @@ import com.greencode.game.base.Sprite;
 import com.greencode.game.math.Rect;
 import com.greencode.game.sprite.Asteroid;
 import com.greencode.game.sprite.Background;
+import com.greencode.game.sprite.Bullet;
 import com.greencode.game.sprite.ButtonLeft;
 import com.greencode.game.sprite.ButtonRight;
 import com.greencode.game.sprite.ButtonShoot;
 import com.greencode.game.sprite.ButtonToMenu;
+import com.greencode.game.sprite.Enemy;
 import com.greencode.game.sprite.GamerModel;
 import com.greencode.game.utils.EnemiesGenerator;
 
@@ -35,7 +37,7 @@ public class GameScreen extends BaseScreen {
     private TextureAtlas atlas;
 
     private Asteroid asteroidList[];
-    private List enemyList;
+    private List<Enemy> enemyList;
 
     private ButtonToMenu buttonToMenu;
     private ButtonShoot buttonShoot;
@@ -116,15 +118,32 @@ public class GameScreen extends BaseScreen {
         enemiesPool.freeAllDestroyedActiveSprites();
     }
 
-    /**
-     * сломал себе весь мозг, но получилось как-то так, толи не могу попасть точка в точку, то ли не работает.
-     * обязательно доделаю в ближайшее время.
-     */
     private void checkCollisions() {
         enemyList = enemiesPool.getActiveObjects();
-        for (Object enemy : enemyList){
-            if (gm.intersect(gm, (Sprite) enemy)) {
-                ((Sprite) enemy).destroy();
+        for (Enemy enemy : enemyList){
+            if (enemy.isDestroyed()) {
+                continue;
+            }
+            float minDist = enemy.getHalfWidth() + gm.getHalfWidth();
+            if (enemy.pos.dst(gm.pos) < minDist){
+                enemy.destroy();
+                gm.destroy();
+            }
+        }
+
+        List<Bullet> bulletList = bulletsPool.getActiveObjects();
+        for(Enemy enemy : enemyList){
+            if (enemy.isDestroyed()) {
+                continue;
+            }
+            for(Bullet bullet : bulletList){
+                if (bullet.getOwner() != gm || bullet.isDestroyed()){
+                    continue;
+                }
+                if (!bullet.isOutside(enemy)){
+                    enemy.damage(bullet.getDamage());
+                    bullet.destroy();
+                }
             }
         }
     }

@@ -55,5 +55,18 @@ public class Ship extends Sprite {
         bullet.set(this, bulletRegion, pos, bulletV, bulletHeight, worldBounds, damage);
         shootSound.play();
     }
+
+    public void damage(int damage){
+        hp -= damage;
+        if (hp <= 0){
+            destroy();
+        }
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        hp = 0;
+    }
 }
 
