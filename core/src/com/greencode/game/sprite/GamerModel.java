@@ -137,19 +137,6 @@ public class GamerModel extends Ship {
         choose = playerSet;
     }
 
-    public static String choosePlayer(){
-
-        int choose = getChoose();
-
-        if (choose == 0) type = "green";
-        if (choose == 1) type = "blue";
-        if (choose == 2) type = "lightBlue";
-        if (choose == 3) type = "pink";
-        if (choose == 4) type = "red";
-
-        return type;
-    }
-
     public static String choosePlayModel(){
 
         int choose = getChoose();
