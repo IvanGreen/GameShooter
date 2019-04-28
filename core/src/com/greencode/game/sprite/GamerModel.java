@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.greencode.game.Pool.BulletsPool;
+import com.greencode.game.Pool.ExplosionsPool;
 import com.greencode.game.base.Ship;
 import com.greencode.game.math.Rect;
 
@@ -15,7 +16,7 @@ public class GamerModel extends Ship {
     private static boolean pressedRight;
     private static boolean isPressedLeft;
 
-    private static int choose = 1;
+    private static int choose = 0;
     private static String type;
 
     private static boolean isGame = false;
@@ -24,10 +25,11 @@ public class GamerModel extends Ship {
     private static Vector2 v = new Vector2();
     private static Vector2 v0 = new Vector2(0.5f,0);
 
-    public GamerModel(TextureAtlas atlas, String type, BulletsPool bulletsPool, Sound shootSound) {
+    public GamerModel(TextureAtlas atlas, String type, BulletsPool bulletsPool, ExplosionsPool explosionsPool, Sound shootSound) {
         super(atlas.findRegion(type),1,5,5);
         this.bulletRegion = atlas.findRegion("zGoodBullet");
         this.bulletsPool = bulletsPool;
+        this.explosionsPool = explosionsPool;
         this.shootSound = shootSound;
         setHeightProportion(0.13f);
         this.bulletV.set(0f,0.5f);
@@ -36,10 +38,11 @@ public class GamerModel extends Ship {
         this.damage = 1;
     }
 
-    public GamerModel(TextureAtlas atlas,String type) {
-        super(atlas.findRegion(type),1,5,5);
+    public GamerModel(TextureAtlas atlas) {
+        super(atlas.findRegion("choosePlayer"),1,5,5);
         setHeightProportion(0.13f);
-        frame = 2;
+        frame = 0;
+        choose = 0;
     }
 
     @Override

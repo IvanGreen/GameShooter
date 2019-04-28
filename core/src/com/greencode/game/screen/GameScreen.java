@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.greencode.game.Pool.BulletsPool;
 import com.greencode.game.Pool.EnemiesPool;
+import com.greencode.game.Pool.ExplosionsPool;
 import com.greencode.game.base.BaseScreen;
 import com.greencode.game.math.Rect;
 import com.greencode.game.sprite.Asteroid;
@@ -27,6 +28,9 @@ import java.util.List;
 
 public class GameScreen extends BaseScreen {
 
+    private enum  State {PLAYING,PAUSE,GAME_OVER}
+    private State state;
+
     private Game game;
 
     private Texture bg;
@@ -42,6 +46,7 @@ public class GameScreen extends BaseScreen {
     private ButtonRight buttonRight;
     private ButtonLeft buttonLeft;
 
+    private ExplosionsPool explosionsPool;
     private BulletsPool bulletsPool;
 
     private EnemiesPool enemiesPool;
@@ -50,6 +55,7 @@ public class GameScreen extends BaseScreen {
     private Music music = Gdx.audio.newMusic(Gdx.files.internal("music_assets/music/game.mp3"));
     private Sound shootSound = Gdx.audio.newSound(Gdx.files.internal("music_assets/sound/bullet.wav"));
     private Sound enemiesShootSound = Gdx.audio.newSound(Gdx.files.internal("music_assets/sound/bullet.wav"));
+    private Sound explosionSound = Gdx.audio.newSound(Gdx.files.internal("music_assets/sound/explosion.wav"));
 
     public GameScreen(Game game) {
         this.game = game;
@@ -60,12 +66,14 @@ public class GameScreen extends BaseScreen {
     public void show() {
         super.show();
         GamerModel.setGame(true);
+        state = State.PLAYING;
         bg = new Texture("textures/Background/backgroundGame.jpg");
         background = new Background(new TextureRegion(bg));
         atlas = new TextureAtlas("cuteTextures/atlas/allpack.pack");
         bulletsPool = new BulletsPool();
-        gm = new GamerModel(atlas,GamerModel.choosePlayModel(),bulletsPool,shootSound);
-        enemiesPool = new EnemiesPool(bulletsPool,enemiesShootSound,worldBounds,gm);
+        explosionsPool = new ExplosionsPool(atlas,explosionSound);
+        gm = new GamerModel(atlas,GamerModel.choosePlayModel(),bulletsPool,explosionsPool,shootSound);
+        enemiesPool = new EnemiesPool(bulletsPool,explosionsPool,enemiesShootSound,worldBounds,gm);
         enemiesGenerator = new EnemiesGenerator(atlas,enemiesPool,worldBounds);
         asteroidList = new Asteroid[20];
         buttonToMenu = new ButtonToMenu(atlas,game);
@@ -84,11 +92,29 @@ public class GameScreen extends BaseScreen {
         for (Asteroid asteroid : asteroidList){
             asteroid.resize(worldBounds);
         }
-        gm.resize(worldBounds);
-        buttonToMenu.resize(worldBounds);
-        buttonRight.resize(worldBounds);
-        buttonShoot.resize(worldBounds);
-        buttonLeft.resize(worldBounds);
+        if(state == State.PLAYING) {
+            gm.resize(worldBounds);
+            buttonToMenu.resize(worldBounds);
+            buttonRight.resize(worldBounds);
+            buttonShoot.resize(worldBounds);
+            buttonLeft.resize(worldBounds);
+        }
+    }
+
+    @Override
+    public void pause() {
+        super.pause();
+        if (state == State.PLAYING){
+            state = State.PAUSE;
+        }
+    }
+
+    @Override
+    public void resume() {
+        super.resume();
+        if (state == State.PAUSE){
+            state = State.PLAYING;
+        }
     }
 
     @Override
@@ -104,22 +130,28 @@ public class GameScreen extends BaseScreen {
         for (Asteroid asteroid : asteroidList){
             asteroid.update(delta);
         }
-        if (!gm.isDestroyed()) {
-
-            gm.update(delta);
-            enemiesGenerator.generate(delta);
-        }
+        explosionsPool.updateActiveSprites(delta);
         updateMusic();
-        bulletsPool.updateActiveSprites(delta);
+        if (state == State.PLAYING){
+        gm.update(delta);
+        enemiesGenerator.generate(delta);
         enemiesPool.updateActiveSprites(delta);
+        bulletsPool.updateActiveSprites(delta);
+        }
+
+
     }
 
     private void freeAllDestroyedSprites(){
         bulletsPool.freeAllDestroyedActiveSprites();
         enemiesPool.freeAllDestroyedActiveSprites();
+        explosionsPool.freeAllDestroyedActiveSprites();
     }
 
     private void checkCollisions() {
+        if (state != State.PLAYING){
+            return;
+        }
         List<Enemy> enemyList = enemiesPool.getActiveObjects();
 
         for (Enemy enemy : enemyList) {
@@ -130,6 +162,7 @@ public class GameScreen extends BaseScreen {
             if (enemy.pos.dst(gm.pos) < minDist) {
                 enemy.destroy();
                 gm.destroy();
+                state = State.GAME_OVER;
                 return;
             }
         }
@@ -155,6 +188,9 @@ public class GameScreen extends BaseScreen {
             } else {
                 if (gm.isBulletCollision(bullet)){
                     gm.damage(bullet.getDamage());
+                    if (gm.isDestroyed()){
+                        state = State.GAME_OVER;
+                    }
                     bullet.destroy();
                     return;
                 }
@@ -169,12 +205,16 @@ public class GameScreen extends BaseScreen {
             asteroid.draw(batch);
         }
         buttonToMenu.draw(batch);
-        bulletsPool.drawActiveSprites(batch);
-        enemiesPool.drawActiveSprites(batch);
-        buttonShoot.draw(batch);
-        buttonRight.draw(batch);
-        buttonLeft.draw(batch);
-        gm.draw(batch);
+        explosionsPool.drawActiveSprites(batch);
+        if (state == State.PLAYING){
+            gm.draw(batch);
+            bulletsPool.drawActiveSprites(batch);
+            enemiesPool.drawActiveSprites(batch);
+            buttonShoot.draw(batch);
+            buttonRight.draw(batch);
+            buttonLeft.draw(batch);
+        }
+
         batch.end();
     }
 
@@ -186,37 +226,47 @@ public class GameScreen extends BaseScreen {
         bulletsPool.dispose();
         enemiesPool.dispose();
         music.dispose();
+        explosionsPool.dispose();
+        explosionSound.dispose();
     }
 
     @Override
     public boolean touchDown(Vector2 touch, int pointer) {
-        gm.touchDown(touch,pointer);
-        buttonToMenu.touchDown(touch,pointer);
-        buttonShoot.touchDown(touch,pointer);
-        buttonRight.touchDown(touch,pointer);
-        buttonLeft.touchDown(touch,pointer);
+        buttonToMenu.touchDown(touch, pointer);
+        if (state == State.PLAYING) {
+            gm.touchDown(touch, pointer);
+            buttonShoot.touchDown(touch, pointer);
+            buttonRight.touchDown(touch, pointer);
+            buttonLeft.touchDown(touch, pointer);
+        }
         return false;
     }
 
     @Override
     public boolean touchUp(Vector2 touch, int pointer) {
-        buttonToMenu.touchUp(touch,pointer);
-        gm.touchUp(touch,pointer);
-        buttonShoot.touchUp(touch,pointer);
-        buttonRight.touchUp(touch,pointer);
-        buttonLeft.touchUp(touch,pointer);
+        buttonToMenu.touchUp(touch, pointer);
+        if (state == State.PLAYING) {
+            gm.touchUp(touch, pointer);
+            buttonShoot.touchUp(touch, pointer);
+            buttonRight.touchUp(touch, pointer);
+            buttonLeft.touchUp(touch, pointer);
+        }
         return false;
     }
 
     @Override
     public boolean keyDown(int keycode) {
-        gm.keyDown(keycode);
+        if (state == State.PLAYING) {
+            gm.keyDown(keycode);
+        }
         return false;
     }
 
     @Override
     public boolean keyUp(int keycode) {
-        gm.keyUp(keycode);
+        if (state == State.PLAYING) {
+            gm.keyUp(keycode);
+        }
         return false;
     }
 

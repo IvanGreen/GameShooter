@@ -5,15 +5,16 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.greencode.game.base.ScaledTouchUpButton;
 import com.greencode.game.math.Rect;
-import com.greencode.game.screen.ChoosePlayerScreen;
 
 public class ButtonLeft extends ScaledTouchUpButton {
 
     private Game game;
+    private GamerModel gamerModel;
 
-    public ButtonLeft(TextureAtlas atlas, Game game) {
+    public ButtonLeft(TextureAtlas atlas, Game game, GamerModel gamerModel) {
         super(atlas.findRegion("left_normal"));
         this.game = game;
+        this.gamerModel = gamerModel;
         setHeightProportion(0.12f);
     }
 
@@ -37,14 +38,7 @@ public class ButtonLeft extends ScaledTouchUpButton {
     @Override
     public void action() {
         if (!GamerModel.isGame()) {
-            int choose = GamerModel.getChoose();
-            if (choose > 0 && choose <= 4) {
-                choose--;
-            } else if (choose == 0) {
-                choose = 4;
-            }
-            GamerModel.setChoose(choose);
-            game.setScreen(new ChoosePlayerScreen(game));
+            gamerModel.choosePrevPlayer();
         }
     }
 

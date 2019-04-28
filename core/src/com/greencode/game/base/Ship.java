@@ -4,8 +4,10 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.greencode.game.Pool.BulletsPool;
+import com.greencode.game.Pool.ExplosionsPool;
 import com.greencode.game.math.Rect;
 import com.greencode.game.sprite.Bullet;
+import com.greencode.game.sprite.Explosion;
 import com.greencode.game.sprite.GamerModel;
 
 public class Ship extends Sprite {
@@ -21,6 +23,7 @@ public class Ship extends Sprite {
     protected Vector2 bulletV;
     protected int damage;
     protected int hp;
+    protected ExplosionsPool explosionsPool;
 
     protected float reloadInterval;
     protected float reloadTimer;
@@ -59,6 +62,32 @@ public class Ship extends Sprite {
         }
     }
 
+    public void chooseNextPlayer(){
+        int choose = GamerModel.getChoose();
+        if (choose >= 0 && choose < 4) {
+            frame++;
+            choose++;
+        } else if (choose == 4) {
+            frame = 0;
+            choose = 0;
+        }
+        GamerModel.setChoose(choose);
+        System.out.println(frame + " / " + choose);
+    }
+
+    public void choosePrevPlayer(){
+        int choose = GamerModel.getChoose();
+        if (choose > 0 && choose <= 4) {
+            frame--;
+            choose--;
+        } else if (choose == 0) {
+            frame = 4;
+            choose = 4;
+        }
+        System.out.println(frame + " / " + choose);
+        GamerModel.setChoose(choose);
+    }
+
     public void shoot() {
         Bullet bullet = (Bullet) bulletsPool.obtain();
         bullet.set(this, bulletRegion, pos, bulletV, bulletHeight, worldBounds, damage);
@@ -77,7 +106,13 @@ public class Ship extends Sprite {
     @Override
     public void destroy() {
         super.destroy();
+        boom();
         hp = 0;
+    }
+
+    private void boom(){
+        Explosion explosion = explosionsPool.obtain();
+        explosion.set(this.getHeight() + 0.15f, this.pos);
     }
 }
 

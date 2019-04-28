@@ -10,10 +10,12 @@ import com.greencode.game.screen.ChoosePlayerScreen;
 public class ButtonRight extends ScaledTouchUpButton {
 
     private Game game;
+    private GamerModel gamerModel;
 
-    public ButtonRight(TextureAtlas atlas, Game game) {
+    public ButtonRight(TextureAtlas atlas, Game game, GamerModel gamerModel) {
         super(atlas.findRegion("right_normal"));
         this.game = game;
+        this.gamerModel = gamerModel;
         setHeightProportion(0.12f);
     }
 
@@ -36,14 +38,7 @@ public class ButtonRight extends ScaledTouchUpButton {
     @Override
     public void action() {
         if (!GamerModel.isGame()) {
-            int choose = GamerModel.getChoose();
-            if (choose >= 0 && choose < 4) {
-                choose++;
-            } else if (choose == 4) {
-                choose = 0;
-            }
-            GamerModel.setChoose(choose);
-            game.setScreen(new ChoosePlayerScreen(game));
+            gamerModel.chooseNextPlayer();
         }
     }
 

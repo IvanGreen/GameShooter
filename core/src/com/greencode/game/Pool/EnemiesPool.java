@@ -10,11 +10,13 @@ public class EnemiesPool extends SpritesPool {
 
     private Rect worldBounds;
     private BulletsPool bulletsPool;
+    private ExplosionsPool explosionsPool;
     private Sound shootSound;
     private GamerModel gamerModel;
 
-    public EnemiesPool(BulletsPool bulletPool, Sound shootSound, Rect worldBounds, GamerModel gamerModel) {
+    public EnemiesPool(BulletsPool bulletPool, ExplosionsPool explosionsPool, Sound shootSound, Rect worldBounds, GamerModel gamerModel) {
         this.bulletsPool = bulletPool;
+        this.explosionsPool = explosionsPool;
         this.shootSound = shootSound;
         this.worldBounds = worldBounds;
         this.gamerModel = gamerModel;
@@ -22,5 +24,5 @@ public class EnemiesPool extends SpritesPool {
     }
 
     @Override
-    protected Enemy newObject() { return new Enemy(bulletsPool, shootSound, worldBounds, gamerModel); }
+    protected Enemy newObject() { return new Enemy(bulletsPool,explosionsPool, shootSound, worldBounds, gamerModel); }
 }

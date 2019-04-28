@@ -43,9 +43,9 @@ public class ChoosePlayerScreen extends BaseScreen {
         bg = new Texture("textures/Background/backgroundGame.jpg");
         background = new Background(new TextureRegion(bg));
         atlas = new TextureAtlas("cuteTextures/atlas/allpack.pack");
-        gm = new GamerModel(atlas,GamerModel.choosePlayer());
-        buttonLeft = new ButtonLeft(atlas,game);
-        buttonRight = new ButtonRight(atlas,game);
+        gm = new GamerModel(atlas);
+        buttonLeft = new ButtonLeft(atlas,game,gm);
+        buttonRight = new ButtonRight(atlas,game,gm);
         buttonOk = new ButtonOk(atlas,game);
     }
 

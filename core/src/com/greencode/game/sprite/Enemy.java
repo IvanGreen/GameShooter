@@ -4,6 +4,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.greencode.game.Pool.BulletsPool;
+import com.greencode.game.Pool.ExplosionsPool;
 import com.greencode.game.base.Ship;
 import com.greencode.game.math.Rect;
 
@@ -16,9 +17,10 @@ public class Enemy extends Ship {
 
     private GamerModel gamerModel;
 
-    public Enemy(BulletsPool bulletPool, Sound shootSound, Rect worldBounds, GamerModel gamerModel) {
+    public Enemy(BulletsPool bulletPool, ExplosionsPool explosionsPool, Sound shootSound, Rect worldBounds, GamerModel gamerModel) {
         this.gamerModel = gamerModel;
         this.bulletsPool = bulletPool;
+        this.explosionsPool = explosionsPool;
         this.worldBounds = worldBounds;
         this.shootSound = shootSound;
         this.descentV = new Vector2(0, -0.3f);
