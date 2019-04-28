@@ -39,6 +39,7 @@ public class GamerModel extends Ship {
     public GamerModel(TextureAtlas atlas,String type) {
         super(atlas.findRegion(type),1,5,5);
         setHeightProportion(0.13f);
+        frame = 2;
     }
 
     @Override

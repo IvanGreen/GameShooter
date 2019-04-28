@@ -1,12 +1,12 @@
 package com.greencode.game.base;
 
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.greencode.game.Pool.BulletsPool;
 import com.greencode.game.math.Rect;
 import com.greencode.game.sprite.Bullet;
+import com.greencode.game.sprite.GamerModel;
 
 public class Ship extends Sprite {
 
@@ -25,7 +25,7 @@ public class Ship extends Sprite {
     protected float reloadInterval;
     protected float reloadTimer;
 
-    protected float damageAnimatedInterval = 0.01f;
+    protected float damageAnimatedInterval = 0.03f;
     protected float damageAnimatedTimer = damageAnimatedInterval;
 
     public Ship(TextureRegion region,int rows, int cols, int frames) {
@@ -52,8 +52,10 @@ public class Ship extends Sprite {
         super.update(delta);
         pos.mulAdd(v, delta);
         damageAnimatedTimer += delta;
-        if(damageAnimatedTimer >= damageAnimatedInterval){
-            frame = 0;
+        if (GamerModel.isGame()) {
+            if (damageAnimatedTimer >= damageAnimatedInterval) {
+                frame = 0;
+            }
         }
     }
 

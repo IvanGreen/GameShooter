@@ -10,6 +10,7 @@ public class Sprite extends Rect {
     protected float angle;
     protected float scale = 1f;
     protected TextureRegion[] regions;
+
     protected int frame;
 
     private boolean isDestroyed;
