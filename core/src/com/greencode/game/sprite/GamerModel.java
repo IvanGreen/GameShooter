@@ -36,6 +36,7 @@ public class GamerModel extends Ship {
         this.bulletHeight = 0.15f;
         this.hp = 10;
         this.damage = 1;
+        stop();
     }
 
     public GamerModel(TextureAtlas atlas) {

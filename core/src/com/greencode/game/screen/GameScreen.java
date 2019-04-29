@@ -88,7 +88,7 @@ public class GameScreen extends BaseScreen {
         buttonRight = new ButtonRight(atlas);
         buttonNewGame = new ButtonNewGame(atlas,game);
         buttonLeft = new ButtonLeft(atlas);
-        gameOver = new GameOver(atlas);
+        gameOver = new GameOver(atlas,gm);
     }
 
     @Override
