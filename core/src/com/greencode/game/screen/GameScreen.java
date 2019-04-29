@@ -215,12 +215,12 @@ public class GameScreen extends BaseScreen {
         buttonToMenu.draw(batch);
         explosionsPool.drawActiveSprites(batch);
         if (state == State.PLAYING){
-            gm.draw(batch);
             bulletsPool.drawActiveSprites(batch);
             enemiesPool.drawActiveSprites(batch);
             buttonShoot.draw(batch);
             buttonRight.draw(batch);
             buttonLeft.draw(batch);
+            gm.draw(batch);
         }
         if(state == State.GAME_OVER){
             buttonNewGame.draw(batch);

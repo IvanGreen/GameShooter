@@ -31,7 +31,7 @@ public class GamerModel extends Ship {
         this.bulletsPool = bulletsPool;
         this.explosionsPool = explosionsPool;
         this.shootSound = shootSound;
-        setHeightProportion(0.13f);
+        setHeightProportion(0.1f);
         this.bulletV.set(0f,0.5f);
         this.bulletHeight = 0.15f;
         this.hp = 10;
