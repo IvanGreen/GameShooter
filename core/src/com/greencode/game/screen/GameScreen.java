@@ -17,10 +17,12 @@ import com.greencode.game.sprite.Asteroid;
 import com.greencode.game.sprite.Background;
 import com.greencode.game.sprite.Bullet;
 import com.greencode.game.sprite.ButtonLeft;
+import com.greencode.game.sprite.ButtonNewGame;
 import com.greencode.game.sprite.ButtonRight;
 import com.greencode.game.sprite.ButtonShoot;
 import com.greencode.game.sprite.ButtonToMenu;
 import com.greencode.game.sprite.Enemy;
+import com.greencode.game.sprite.GameOver;
 import com.greencode.game.sprite.GamerModel;
 import com.greencode.game.utils.EnemiesGenerator;
 
@@ -45,6 +47,8 @@ public class GameScreen extends BaseScreen {
     private ButtonShoot buttonShoot;
     private ButtonRight buttonRight;
     private ButtonLeft buttonLeft;
+    private ButtonNewGame buttonNewGame;
+    private GameOver gameOver;
 
     private ExplosionsPool explosionsPool;
     private BulletsPool bulletsPool;
@@ -82,7 +86,9 @@ public class GameScreen extends BaseScreen {
         }
         buttonShoot = new ButtonShoot(atlas);
         buttonRight = new ButtonRight(atlas);
+        buttonNewGame = new ButtonNewGame(atlas,game);
         buttonLeft = new ButtonLeft(atlas);
+        gameOver = new GameOver(atlas);
     }
 
     @Override
@@ -98,6 +104,8 @@ public class GameScreen extends BaseScreen {
             buttonRight.resize(worldBounds);
             buttonShoot.resize(worldBounds);
             buttonLeft.resize(worldBounds);
+            buttonNewGame.resize(worldBounds);
+            gameOver.resize(worldBounds);
         }
     }
 
@@ -214,7 +222,10 @@ public class GameScreen extends BaseScreen {
             buttonRight.draw(batch);
             buttonLeft.draw(batch);
         }
-
+        if(state == State.GAME_OVER){
+            buttonNewGame.draw(batch);
+            gameOver.draw(batch);
+        }
         batch.end();
     }
 
@@ -239,6 +250,9 @@ public class GameScreen extends BaseScreen {
             buttonRight.touchDown(touch, pointer);
             buttonLeft.touchDown(touch, pointer);
         }
+        if (state == State.GAME_OVER){
+            buttonNewGame.touchDown(touch,pointer);
+        }
         return false;
     }
 
@@ -250,6 +264,9 @@ public class GameScreen extends BaseScreen {
             buttonShoot.touchUp(touch, pointer);
             buttonRight.touchUp(touch, pointer);
             buttonLeft.touchUp(touch, pointer);
+        }
+        if (state == State.GAME_OVER){
+            buttonNewGame.touchUp(touch,pointer);
         }
         return false;
     }
