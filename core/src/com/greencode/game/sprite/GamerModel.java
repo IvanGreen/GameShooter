@@ -25,6 +25,8 @@ public class GamerModel extends Ship {
     private static Vector2 v = new Vector2();
     private static Vector2 v0 = new Vector2(0.5f,0);
 
+    private int HP = 10;
+
     public GamerModel(TextureAtlas atlas, String type, BulletsPool bulletsPool, ExplosionsPool explosionsPool, Sound shootSound) {
         super(atlas.findRegion(type),1,5,5);
         this.bulletRegion = atlas.findRegion("zGoodBullet");
@@ -34,7 +36,7 @@ public class GamerModel extends Ship {
         setHeightProportion(0.1f);
         this.bulletV.set(0f,0.5f);
         this.bulletHeight = 0.15f;
-        this.hp = 10;
+        this.hp = HP;
         this.damage = 1;
         stop();
     }

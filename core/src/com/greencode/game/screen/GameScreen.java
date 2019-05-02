@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Align;
 import com.greencode.game.Pool.BulletsPool;
 import com.greencode.game.Pool.EnemiesPool;
 import com.greencode.game.Pool.ExplosionsPool;
@@ -24,7 +25,9 @@ import com.greencode.game.sprite.ButtonToMenu;
 import com.greencode.game.sprite.Enemy;
 import com.greencode.game.sprite.GameOver;
 import com.greencode.game.sprite.GamerModel;
+import com.greencode.game.sprite.HitPoints;
 import com.greencode.game.utils.EnemiesGenerator;
+import com.greencode.game.utils.Font;
 
 import java.util.List;
 
@@ -49,6 +52,7 @@ public class GameScreen extends BaseScreen {
     private ButtonLeft buttonLeft;
     private ButtonNewGame buttonNewGame;
     private GameOver gameOver;
+    private HitPoints hitPoints;
 
     private ExplosionsPool explosionsPool;
     private BulletsPool bulletsPool;
@@ -60,6 +64,12 @@ public class GameScreen extends BaseScreen {
     private Sound shootSound = Gdx.audio.newSound(Gdx.files.internal("music_assets/sound/bullet.wav"));
     private Sound enemiesShootSound = Gdx.audio.newSound(Gdx.files.internal("music_assets/sound/bullet.wav"));
     private Sound explosionSound = Gdx.audio.newSound(Gdx.files.internal("music_assets/sound/explosion.wav"));
+    private Font font;
+
+    private int frags = 0;
+    private static final String ZERO = "0";
+    private StringBuilder sbFrags = new StringBuilder();
+
 
     public GameScreen(Game game) {
         this.game = game;
@@ -88,6 +98,9 @@ public class GameScreen extends BaseScreen {
         buttonRight = new ButtonRight(atlas);
         buttonNewGame = new ButtonNewGame(atlas,game);
         buttonLeft = new ButtonLeft(atlas);
+        font = new Font("fonts/fonts.fnt","fonts/fonts.png");
+        font.setFontSize(0.05f);
+        hitPoints = new HitPoints(atlas,gm);
         gameOver = new GameOver(atlas,gm);
     }
 
@@ -106,6 +119,7 @@ public class GameScreen extends BaseScreen {
             buttonLeft.resize(worldBounds);
             buttonNewGame.resize(worldBounds);
             gameOver.resize(worldBounds);
+            hitPoints.resize(worldBounds);
         }
     }
 
@@ -145,9 +159,8 @@ public class GameScreen extends BaseScreen {
         enemiesGenerator.generate(delta);
         enemiesPool.updateActiveSprites(delta);
         bulletsPool.updateActiveSprites(delta);
+        hitPoints.update(delta);
         }
-
-
     }
 
     private void freeAllDestroyedSprites(){
@@ -190,6 +203,9 @@ public class GameScreen extends BaseScreen {
                     if (enemy.isBulletCollision(bullet)) {
                         enemy.damage(bullet.getDamage());
                         bullet.destroy();
+                        if (enemy.isDestroyed()){
+                            frags++;
+                        }
                         return;
                     }
                 }
@@ -221,12 +237,30 @@ public class GameScreen extends BaseScreen {
             buttonRight.draw(batch);
             buttonLeft.draw(batch);
             gm.draw(batch);
+            hitPoints.draw(batch);
         }
         if(state == State.GAME_OVER){
             buttonNewGame.draw(batch);
             gameOver.draw(batch);
         }
+        printInfo();
         batch.end();
+    }
+
+    private void printInfo() {
+        sbFrags.setLength(0);
+        if (frags < 10) {
+            font.draw(batch, sbFrags.append(ZERO).append(ZERO).append(ZERO).append(frags), worldBounds.pos.x, worldBounds.getTop(), Align.center);
+        }
+        if (frags > 9 && frags < 100){
+            font.draw(batch, sbFrags.append(ZERO).append(ZERO).append(frags), worldBounds.pos.x, worldBounds.getTop(), Align.center);
+        }
+        if (frags > 99 && frags < 1000){
+            font.draw(batch, sbFrags.append(ZERO).append(frags), worldBounds.pos.x, worldBounds.getTop(), Align.center);
+        }
+        if (frags > 999){
+            font.draw(batch, sbFrags.append(frags), worldBounds.pos.x, worldBounds.getTop(), Align.center);
+        }
     }
 
     @Override
@@ -239,6 +273,7 @@ public class GameScreen extends BaseScreen {
         music.dispose();
         explosionsPool.dispose();
         explosionSound.dispose();
+        font.dispose();
     }
 
     @Override

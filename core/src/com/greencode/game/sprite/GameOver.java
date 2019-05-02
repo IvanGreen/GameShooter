@@ -1,6 +1,5 @@
 package com.greencode.game.sprite;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.greencode.game.base.Sprite;
 import com.greencode.game.math.Rect;
